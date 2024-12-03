@@ -1,0 +1,83 @@
+.title__container {
+  max-width: 1280px;
+  margin-block: 1rem;
+}
+
+.title__primary-title {
+  font-size: 2.3rem;
+  font-weight: 400;
+}
+
+.title__original-title {
+  font-size: 1.6rem;
+  font-weight: 300;
+}
+
+.list {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0;
+  margin: 0;
+}
+
+.list__element:first-child {
+  list-style-type: none;
+}
+
+.star {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.title__row {
+  align-items: center;
+}
+
+.title__number-of-votes {
+  font-size: 0.8rem;
+}
+
+.title__details {
+  font-weight: 600;
+}
+
+.title__rating {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.title__section-header {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.title__section-header--large {
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+.title__photo-and-genres {
+  display: flex;
+  flex-direction: column;
+}
+
+.title__badge {
+  margin-top: 1rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.title__badge-element {
+  width: 100%;
+}
+
+.title__plot {
+  font-weight: 500;
+}
+
+.title__top-cast {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+}
