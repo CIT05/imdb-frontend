@@ -21,7 +21,7 @@ const Title = () => {
   const [limitCast, setLimitCast] = useState(true);
   const [limitProduction, setLimitProduction] = useState(true);
   const [limitKnownFor, setLimitKnownFor] = useState(true);
-  const [limistDirectors, setLimitDirectors] = useState(true);
+  const [limitDirectors, setLimitDirectors] = useState(true);
   const [limitWriters, setLimitWriters] = useState(true);
 
   const [title, setTitle] = useState({});
@@ -45,7 +45,7 @@ const Title = () => {
   };
 
   const handleDirectorsClick = () => {
-    setLimitDirectors(!limistDirectors);
+    setLimitDirectors(!limitDirectors);
   };
 
   const handleWritersClick = () => {
@@ -153,13 +153,13 @@ const Title = () => {
             <Row className='my-3'>
               <span className='title__section-header'>Directors</span>
               <div className='title__directors-and-writers mb-2'>
-                <ul className='list'>
-                  {title.productionPersons &&
-                    title.productionPersons
+                {title.productionPersons && (
+                  <ul className='list'>
+                    {Array.isArray(title.productionPersons) && title.productionPersons
                       .filter(
-                        (productionPerson) => productionPerson.roleId === 37
+                        (productionPerson) => productionPerson && productionPerson.roleId === 37
                       )
-                      .slice(0, 5)
+                      .slice(0, limitDirectors ? 5 : undefined)
                       .map((productionPerson) => (
                         <li
                           className='text-info list__element'
@@ -171,17 +171,23 @@ const Title = () => {
                           {productionPerson.person.primaryName}
                         </li>
                       ))}
-                </ul>
+                       { title.productionPersons && title.productionPersons.filter((productionPerson) => productionPerson && productionPerson.roleId === 37).length > 5 && (
+                        
+                        <span className="title__limit-button text-secondary" onClick={handleDirectorsClick}>{limitDirectors ? 'Show More' : 'Show Less'}...</span>
+                       )}
+                  </ul>
+                )}
               </div>
               <span className='title__section-header'>Writers</span>
               <div className='title__directors-and-writers'>
                 <ul className='list'>
-                  {title.productionPersons &&
-                    title.productionPersons
+                {title.productionPersons && (
+                  <ul className='list'>
+                    {Array.isArray(title.productionPersons) && title.productionPersons
                       .filter(
-                        (productionPerson) => productionPerson.roleId === 28
+                        (productionPerson) => productionPerson && productionPerson.roleId === 28
                       )
-                      .slice(0, 5)
+                      .slice(0, limitWriters ? 5 : undefined)
                       .map((productionPerson) => (
                         <li
                           className='text-info list__element'
@@ -193,6 +199,12 @@ const Title = () => {
                           {productionPerson.person.primaryName}
                         </li>
                       ))}
+                        { title.productionPersons && title.productionPersons.filter((productionPerson) => productionPerson && productionPerson.roleId === 28).length > 5 && (
+                        
+                        <span className="title__limit-button text-secondary" onClick={handleDirectorsClick}>{limitDirectors ? 'Show More' : 'Show Less'}...</span>
+                       )}
+                  </ul>
+                )}
                 </ul>
               </div>
             </Row>
@@ -222,7 +234,7 @@ const Title = () => {
                     })()}
                 </div>
 
-                {title.principals?.filter((principal) => principal?.characters)
+                {title.principals?.filter((principal) => principal && principal.characters)
                   .length > 4 && (
                   <div
                     className='title__cast-button'
@@ -266,13 +278,13 @@ const Title = () => {
                     })()}
                 </div>
 
-                {title.principals?.filter((principal) => principal?.job)
+                {title.principals?.filter((principal) => principal && principal.job)
                   .length > 4 && (
                   <div
                     className='title__cast-button'
                     onClick={handleProductionClick}
                   >
-                    {limitCast ? (
+                    {limitProduction ? (
                       <i className='bi bi-chevron-down title__cast-button-icon'>
                         {' '}
                         Show more{' '}
