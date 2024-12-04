@@ -27,7 +27,6 @@ function App() {
           <Route path='/title/:tconst' element={<Title />} />
         </Routes>
       </BrowserRouter>
-      <Footer />
     </>
   );
 }

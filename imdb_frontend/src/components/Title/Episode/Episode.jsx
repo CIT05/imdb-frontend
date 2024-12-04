@@ -4,8 +4,8 @@ import './Episode.css';
 const Episode = ({ season, episodeNumber }) => {
   return (
     <div className="episode">
-      <p>Season: {season}</p>
-      <p>Episode: {episodeNumber}</p>
+      <p>Season: <span className='text-info'>{season}</span></p>
+      <p >Episode: <span className='text-info'>{episodeNumber}</span></p>
     </div>
   );
 };
