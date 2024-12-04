@@ -20,6 +20,10 @@ const Title = () => {
 
   const [limitCast, setLimitCast] = useState(true);
   const [limitProduction, setLimitProduction] = useState(true);
+  const [limitKnownFor, setLimitKnownFor] = useState(true);
+  const [limistDirectors, setLimitDirectors] = useState(true);
+  const [limitWriters, setLimitWriters] = useState(true);
+
   const [title, setTitle] = useState({});
 
   useEffect(() => {
@@ -33,8 +37,19 @@ const Title = () => {
   };
 
   const handleProductionClick = () => {
-    console.log('clicked');
     setLimitProduction(!limitProduction);
+  };
+
+  const handleKnownForClick = () => {
+    setLimitKnownFor(!limitKnownFor);
+  };
+
+  const handleDirectorsClick = () => {
+    setLimitDirectors(!limistDirectors);
+  };
+
+  const handleWritersClick = () => {
+    setLimitWriters(!limitWriters);
   };
 
   return (
@@ -144,7 +159,7 @@ const Title = () => {
                       .filter(
                         (productionPerson) => productionPerson.roleId === 37
                       )
-                      .slice(0,5)
+                      .slice(0, 5)
                       .map((productionPerson) => (
                         <li
                           className='text-info list__element'
@@ -166,7 +181,7 @@ const Title = () => {
                       .filter(
                         (productionPerson) => productionPerson.roleId === 28
                       )
-                      .slice(0,5)
+                      .slice(0, 5)
                       .map((productionPerson) => (
                         <li
                           className='text-info list__element'
@@ -182,7 +197,7 @@ const Title = () => {
               </div>
             </Row>
             <Row>
-              <Col s={12} md={6} className="title__section-cast">
+              <Col s={12} md={6} className='title__section-cast'>
                 <span className='title__section-header--large'>Top Cast</span>
 
                 <div className='title__top-cast'>
@@ -270,21 +285,47 @@ const Title = () => {
                     )}
                   </div>
                 )}
-
-
               </Col>
               <Col s={12} md={6}>
-                <span className='title__section-header--large'>People Known For This Title</span>
+                <span className='title__section-header--large title__known-for'>
+                  People Known For This Title
+                </span>
                 {title.knownFors && (
                   <div className='title__known-for'>
-                    {title.knownFors.map((person) => (
-                      <PersonPreview
-                        key={person.url}
-                        name={person.primaryName}
-                        img={person.photoUrl}
-                        isSmall={true}
-                      />
-                    ))}
+                    {limitKnownFor
+                      ? title.knownFors
+                          .slice(0, 4)
+                          .map((person) => (
+                            <PersonPreview
+                              key={person.url}
+                              name={person.primaryName}
+                              img={person.photoUrl}
+                              isSmall={true}
+                            />
+                          ))
+                      : title.knownFors.map((person) => (
+                          <PersonPreview
+                            key={person.url}
+                            name={person.primaryName}
+                            img={person.photoUrl}
+                            isSmall={true}
+                          />
+                        ))}
+                    {title.knownFors.length > 4 && (
+                      <div onClick={handleKnownForClick}>
+                        {limitKnownFor ? (
+                          <i className='bi bi-chevron-down title__cast-button-icon'>
+                            {' '}
+                            Show more{' '}
+                          </i>
+                        ) : (
+                          <i className='bi bi-chevron-up title__cast-button-icon'>
+                            {' '}
+                            Show less{' '}
+                          </i>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
               </Col>
@@ -294,16 +335,18 @@ const Title = () => {
               <Row>
                 <Col>
                   <span className='title__section-header--large'>Episodes</span>
-                  <span className="title__episodes-number mx-2">{title.episodes.length}</span>
+                  <span className='title__episodes-number mx-2'>
+                    {title.episodes.length}
+                  </span>
                   <div className='title__episodes'>
-                  {title.episodes.slice(0,3).map((episode) => (
-                    <div key={episode.tconst}>
-                      <Episode
-                        season={episode.seasonNumber}
-                        episodeNumber={episode.episodeNumber}
-                      ></Episode>
-                    </div>
-                  ))}
+                    {title.episodes.slice(0, 3).map((episode) => (
+                      <div key={episode.tconst}>
+                        <Episode
+                          season={episode.seasonNumber}
+                          episodeNumber={episode.episodeNumber}
+                        ></Episode>
+                      </div>
+                    ))}
                   </div>
                 </Col>
               </Row>
