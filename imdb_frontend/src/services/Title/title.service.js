@@ -55,33 +55,8 @@ const getTitleAndPersons = async (tconst) => {
 	}
 
 	if (title.principals && title.principals.length > 0) {
-		principals = await Promise.all(
-			title.principals.map(async (principals) => {
-				if (principals.personUrl) {
-					const person = await fetchPerson(principals.personUrl);
-
-					if (principals.characters) {
-						if (!principals.characters.includes('segment')) {
-							const characterArray = JSON.parse(
-								principals.characters.replace(/'/g, '"')
-							);
-
-							principals.characters = characterArray;
-						} else {
-							principals.characters = ['Test'];
-						}
-					} else {
-						principals.characters = [];
-					}
-
-					return {
-						...principals,
-						person,
-					};
-				}
-				return null;
-			})
-		);
+		principals = await handleTitlePrinciples(title.principals);
+		console.log('principals', principals);
 	}
 
 	if (title.knownFors && title.knownFors.length > 0) {
@@ -103,6 +78,67 @@ const getTitleAndPersons = async (tconst) => {
 	};
 	console.log(titleAndPersonsObject);
 	return titleAndPersonsObject;
+};
+
+const handleTitlePrinciples = async (principals) => {
+	return await Promise.all(
+		principals.map(async (principals) => {
+			if (principals.personUrl) {
+				const person = await fetchPerson(principals.personUrl);
+
+				if (principals.characters) {
+					if (!principals.characters.includes('segment')) {
+						try {
+							const cleanedString = principals.characters
+								.slice(2, -2)
+								.replace(/'/g, '"');
+
+							const characterArray = [cleanedString];
+
+							principals.characters = characterArray;
+						} catch (e) {
+							console.error(
+								'Error processing principals.characters:'
+							);
+						}
+					} else {
+						try {
+							const cleanedString = principals.characters
+								.slice(2, -2)
+								.replace(/'/g, '"');
+
+							const regex = /^([^()]+)\s\(segment\s"([^"]+)"\)$/;
+							const match = cleanedString.match(regex);
+
+							if (match) {
+								principals.characters = {
+									characters: match[1].trim(),
+									segment: match[2].trim(),
+								};
+							} else {
+								throw new Error(
+									"String format didn't match the expected pattern"
+								);
+							}
+						} catch (e) {
+							console.error(
+								'Error parsing segment/character:',
+								e
+							);
+						}
+					}
+					return {
+						...principals,
+						person,
+					};
+				}
+				return {
+					...principals,
+					person,
+				};
+			}
+		})
+	);
 };
 
 export { getTitleAndPersons, fetchTitle };

@@ -144,6 +144,7 @@ const Title = () => {
                       .filter(
                         (productionPerson) => productionPerson.roleId === 37
                       )
+                      .slice(0,5)
                       .map((productionPerson) => (
                         <li
                           className='text-info list__element'
@@ -165,6 +166,7 @@ const Title = () => {
                       .filter(
                         (productionPerson) => productionPerson.roleId === 28
                       )
+                      .slice(0,5)
                       .map((productionPerson) => (
                         <li
                           className='text-info list__element'
@@ -185,35 +187,28 @@ const Title = () => {
 
                 <div className='title__top-cast'>
                   {title.principals &&
-                  title.principals.filter(
-                    (titlePrincipal) => !titlePrincipal.job
-                  ).length > 4 &&
-                  limitCast
-                    ? title.principals
-                        .filter((titlePrincipal) => !titlePrincipal.job)
-                        .slice(0, 4)
-                        .map((principal) => (
-                          <PersonPreview
-                            key={principal.url}
-                            name={principal.person.primaryName}
-                            character={principal.characters}
-                            img={principal.person.photoUrl}
-                          />
-                        ))
-                    : title.principals
-                        .filter((titlePrincipal) => !titlePrincipal.job)
-                        .map((principal) => (
-                          <PersonPreview
-                            key={principal.url}
-                            name={principal.person.primaryName}
-                            character={principal.characters}
-                            img={principal.person.photoUrl}
-                          />
-                        ))}
+                    (() => {
+                      const castWithCharacters = title.principals.filter(
+                        (principal) => principal && principal.characters
+                      );
+
+                      const displayedCast = limitCast
+                        ? castWithCharacters.slice(0, 4)
+                        : castWithCharacters;
+
+                      return displayedCast.map((principal) => (
+                        <PersonPreview
+                          key={principal.url}
+                          name={principal.person?.primaryName || 'Unknown'}
+                          character={principal.characters}
+                          img={principal.person?.photoUrl}
+                        />
+                      ));
+                    })()}
                 </div>
-                {title.principals.filter(
-                  (titlePrincipal) => !titlePrincipal.job
-                ).length > 4 && (
+
+                {title.principals?.filter((principal) => principal?.characters)
+                  .length > 4 && (
                   <div
                     className='title__cast-button'
                     onClick={handleTopCastClick}
@@ -236,48 +231,33 @@ const Title = () => {
 
                 <div className='title__top-cast'>
                   {title.principals &&
-                  title.principals.filter(
-                    (titlePrincipal) =>
-                      titlePrincipal.job && !titlePrincipal.character
-                  ).length > 4 &&
-                  limitProduction
-                    ? title.principals
-                        .filter(
-                          (titlePrincipal) =>
-                            titlePrincipal.job && !titlePrincipal.character
-                        )
-                        .slice(0, 4)
-                        .map((principal) => (
-                          <PersonPreview
-                            key={principal.url}
-                            name={principal.person.primaryName}
-                            job={principal.job}
-                            img={principal.person.photoUrl}
-                          />
-                        ))
-                    : title.principals
-                        .filter(
-                          (titlePrincipal) =>
-                            titlePrincipal.job && !titlePrincipal.character
-                        )
-                        .map((principal) => (
-                          <PersonPreview
-                            key={principal.url}
-                            name={principal.person.primaryName}
-                            job={principal.job}
-                            img={principal.person.photoUrl}
-                          />
-                        ))}
+                    (() => {
+                      const castWithJobs = title.principals.filter(
+                        (principal) => principal && principal.job
+                      );
+
+                      const displayedCast = limitProduction
+                        ? castWithJobs.slice(0, 4)
+                        : castWithJobs;
+
+                      return displayedCast.map((principal) => (
+                        <PersonPreview
+                          key={principal.url}
+                          name={principal.person?.primaryName || 'Unknown'}
+                          job={principal.job}
+                          img={principal.person?.photoUrl}
+                        />
+                      ));
+                    })()}
                 </div>
-                {title.principals.filter(
-                  (titlePrincipal) =>
-                    titlePrincipal.job && !titlePrincipal.character
-                ).length > 4 && (
+
+                {title.principals?.filter((principal) => principal?.job)
+                  .length > 4 && (
                   <div
-                    onClick={handleProductionClick}
                     className='title__cast-button'
+                    onClick={handleProductionClick}
                   >
-                    {limitProduction ? (
+                    {limitCast ? (
                       <i className='bi bi-chevron-down title__cast-button-icon'>
                         {' '}
                         Show more{' '}
@@ -290,9 +270,22 @@ const Title = () => {
                     )}
                   </div>
                 )}
+
+
               </Col>
               <Col s={12} md={6}>
-                <span className='title__section-header--large'>Popular</span>
+                <span className='title__section-header--large'>People Known For This Title</span>
+                {title.knownFors && (
+                  <div className='title__known-for'>
+                    {title.knownFors.map((person) => (
+                      <PersonPreview
+                        key={person.url}
+                        name={person.primaryName}
+                        img={person.photoUrl}
+                      />
+                    ))}
+                  </div>
+                )}
               </Col>
             </Row>
 
@@ -300,7 +293,9 @@ const Title = () => {
               <Row>
                 <Col>
                   <span className='title__section-header--large'>Episodes</span>
-                  {title.episodes.map((episode) => (
+                  <span className="title__episodes-number mx-2">{title.episodes.length}</span>
+                  <div className='title__episodes'>
+                  {title.episodes.slice(0,3).map((episode) => (
                     <div key={episode.tconst}>
                       <Episode
                         season={episode.seasonNumber}
@@ -308,6 +303,7 @@ const Title = () => {
                       ></Episode>
                     </div>
                   ))}
+                  </div>
                 </Col>
               </Row>
             )}
