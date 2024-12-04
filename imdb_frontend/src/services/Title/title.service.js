@@ -12,10 +12,10 @@ const fetchPerson = async (url) => {
 
   return fetch(url)
     .then((response) => response.json())
-    .then((data) => {
+    .then(async (data) => {
       return {
         ...data,
-        photoUrl,
+        photoUrl: await fetchPersonPhoto(photoUrl),
       };
     });
 };
@@ -24,7 +24,11 @@ const fetchPersonPhoto = async (photoUrl) => {
   return fetch(photoUrl)
     .then((response) => response.json())
     .then((data) => {
-      return data.person_results[0].profile_path;
+      if (data && data.person_results && data.person_results.length > 0) {
+        const photoPath = data.person_results[0].profile_path;
+        return 'https://image.tmdb.org/t/p/original/' + photoPath;
+      }
+      return null;
     });
 };
 
