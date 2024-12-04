@@ -1,0 +1,11 @@
+.episode {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+  border: 1px white solid;
+  width: fit-content;
+  padding: 2rem;
+  border-radius: 10px;
+}

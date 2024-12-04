@@ -11,6 +11,7 @@ import { getTitleAndPersons } from '../../services/Title/title.service';
 import './Title.css';
 import PersonPreview from '../Person/PersonPreview.jsx';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import Episode from './Episode/Episode.jsx';
 
 var Star = require('../../assets/star.png');
 
@@ -181,7 +182,7 @@ const Title = () => {
             <Row>
               <Col s={12} md={6}>
                 <span className='title__section-header--large'>Top Cast</span>
-                  
+
                 <div className='title__top-cast'>
                   {title.principals &&
                   title.principals.filter(
@@ -210,7 +211,13 @@ const Title = () => {
                           />
                         ))}
                 </div>
-                <div className="title__cast-button" onClick={handleTopCastClick}>
+                {title.principals.filter(
+                  (titlePrincipal) => !titlePrincipal.job
+                ).length > 4 && (
+                  <div
+                    className='title__cast-button'
+                    onClick={handleTopCastClick}
+                  >
                     {limitCast ? (
                       <i className='bi bi-chevron-down title__cast-button-icon'>
                         {' '}
@@ -223,21 +230,22 @@ const Title = () => {
                       </i>
                     )}
                   </div>
+                )}
 
-              
-                  <span className='title__section-header--large'>
-                    Production
-                  </span>
-
+                <span className='title__section-header--large'>Production</span>
 
                 <div className='title__top-cast'>
                   {title.principals &&
                   title.principals.filter(
-                    (titlePrincipal) => titlePrincipal.job && !titlePrincipal.character
+                    (titlePrincipal) =>
+                      titlePrincipal.job && !titlePrincipal.character
                   ).length > 4 &&
                   limitProduction
                     ? title.principals
-                        .filter((titlePrincipal) => titlePrincipal.job && !titlePrincipal.character)
+                        .filter(
+                          (titlePrincipal) =>
+                            titlePrincipal.job && !titlePrincipal.character
+                        )
                         .slice(0, 4)
                         .map((principal) => (
                           <PersonPreview
@@ -248,7 +256,10 @@ const Title = () => {
                           />
                         ))
                     : title.principals
-                        .filter((titlePrincipal) => titlePrincipal.job && !titlePrincipal.character)
+                        .filter(
+                          (titlePrincipal) =>
+                            titlePrincipal.job && !titlePrincipal.character
+                        )
                         .map((principal) => (
                           <PersonPreview
                             key={principal.url}
@@ -258,7 +269,14 @@ const Title = () => {
                           />
                         ))}
                 </div>
-                <div onClick={handleProductionClick} className="title__cast-button">
+                {title.principals.filter(
+                  (titlePrincipal) =>
+                    titlePrincipal.job && !titlePrincipal.character
+                ).length > 4 && (
+                  <div
+                    onClick={handleProductionClick}
+                    className='title__cast-button'
+                  >
                     {limitProduction ? (
                       <i className='bi bi-chevron-down title__cast-button-icon'>
                         {' '}
@@ -271,7 +289,7 @@ const Title = () => {
                       </i>
                     )}
                   </div>
-       
+                )}
               </Col>
               <Col s={12} md={6}>
                 <span className='title__section-header--large'>Popular</span>
@@ -280,7 +298,17 @@ const Title = () => {
 
             {title.episodes.length > 0 && (
               <Row>
-                <Col>Episodes</Col>
+                <Col>
+                  <span className='title__section-header--large'>Episodes</span>
+                  {title.episodes.map((episode) => (
+                    <div key={episode.tconst}>
+                      <Episode
+                        season={episode.seasonNumber}
+                        episodeNumber={episode.episodeNumber}
+                      ></Episode>
+                    </div>
+                  ))}
+                </Col>
               </Row>
             )}
           </Container>

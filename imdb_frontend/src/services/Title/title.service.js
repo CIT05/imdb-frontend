@@ -61,11 +61,17 @@ const getTitleAndPersons = async (tconst) => {
           const person = await fetchPerson(principals.personUrl);
 
           if (principals.characters) {
-            const characterArray = JSON.parse(
-              principals.characters.replace(/'/g, '"')
-            );
+            if (!principals.characters.includes('segment')) {
+              const characterArray = JSON.parse(
+                principals.characters.replace(/'/g, '"')
+              );
 
-            principals.characters = characterArray;
+              principals.characters = characterArray;
+            } else {
+              principals.characters = ['Test'];
+            }
+          } else {
+            principals.characters = [];
           }
 
           return {
