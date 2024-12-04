@@ -7,7 +7,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const Navigation = () => {
     return (
-        <Navbar expand="lg" className="bg-dark" variant="dark" sticky="top">
+        <Navbar expand="lg" className="bg-dark" variant="dark" >
             <Container>
                 <Navbar.Brand href="#home" className="me-auto">
                     IMDb
