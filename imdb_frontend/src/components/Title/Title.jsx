@@ -182,7 +182,7 @@ const Title = () => {
               </div>
             </Row>
             <Row>
-              <Col s={12} md={6}>
+              <Col s={12} md={6} className="title__section-cast">
                 <span className='title__section-header--large'>Top Cast</span>
 
                 <div className='title__top-cast'>
@@ -282,6 +282,7 @@ const Title = () => {
                         key={person.url}
                         name={person.primaryName}
                         img={person.photoUrl}
+                        isSmall={true}
                       />
                     ))}
                   </div>

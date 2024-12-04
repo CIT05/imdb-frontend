@@ -126,6 +126,14 @@
   font-size: 1.5rem;
 }
 
+.title__section-cast {
+  border-right: 1px solid grey;
+}
+
+.title__known-for {
+  padding-inline: 5rem;
+}
+
 .title__top-cast {
   display: grid;
   gap: 1rem;
