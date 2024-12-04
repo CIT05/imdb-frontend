@@ -7,7 +7,7 @@ const fetchTitle = async (tconst) => {
 
 const fetchPerson = async (url) => {
   const nconst = url.split('/').pop();
-  const apiKey = '';
+  const apiKey = process.env.REACT_APP_TMDB_API_KEY;
   const photoUrl = `https://api.themoviedb.org/3/find/${nconst}?external_source=imdb_id&api_key=${apiKey}`;
 
   return fetch(url)
@@ -24,7 +24,7 @@ const fetchPersonPhoto = async (photoUrl) => {
   return fetch(photoUrl)
     .then((response) => response.json())
     .then((data) => {
-      if (data && data.person_results && data.person_results.length > 0) {
+      if (data.person_results[0]?.profile_path) {
         const photoPath = data.person_results[0].profile_path;
         return 'https://image.tmdb.org/t/p/original/' + photoPath;
       }

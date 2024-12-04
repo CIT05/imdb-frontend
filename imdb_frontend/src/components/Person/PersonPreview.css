@@ -14,3 +14,7 @@
 .person-preview__info {
   margin-left: 1rem;
 }
+
+.person-preview__photo-blank {
+  font-size: 7rem !important;
+}
