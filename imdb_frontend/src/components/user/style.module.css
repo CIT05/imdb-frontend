@@ -5,3 +5,16 @@
 	padding-top: 300px;
 	padding-bottom: 300px;	
 }
+
+.card {
+	width: 18rem;
+	height: 8rem;
+	cursor: "pointer";
+}
+
+.cardBody {
+	min-height: 3rem;
+	font-size: 1rem;
+	word-wrap: 'break-word';
+	overflow-wrap: 'break-word';
+}
