@@ -26,6 +26,8 @@ const Navigation = () => {
 
                 <Navbar.Collapse id="basic-navbar-nav"> 
                     <Nav className={`me-auto ${style.nav}`}>
+                        <Nav.Link href="/signup">Sign up</Nav.Link>
+                        <Nav.Link href="/login">Log in</Nav.Link>
                         <Nav.Link href="/movies">Movies</Nav.Link>
                         <Nav.Link href="/profile">Profile</Nav.Link>
                     </Nav>
