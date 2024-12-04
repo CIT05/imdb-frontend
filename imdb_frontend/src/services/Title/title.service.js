@@ -56,7 +56,6 @@ const getTitleAndPersons = async (tconst) => {
 
   if (title.principals && title.principals.length > 0) {
     principals = await handleTitlePrinciples(title.principals);
-    console.log('principals', principals);
   }
 
   if (title.knownFors && title.knownFors.length > 0) {

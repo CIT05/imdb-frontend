@@ -1,0 +1,23 @@
+.nav {
+    width: 100vw;
+    height: 100vh;
+    animation: fallFromTop 1s ease-out;
+}
+
+@keyframes fallFromTop {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+.profile {
+    padding-inline: 2rem;
+}
+
+@media (max-width: 40rem) {
+    .profile {
+        padding-inline: 0;
+    }
+}
