@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { Container, Card, Row, Col, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router';
 
 const Carousel = ({ ratingHistory }) => {
 	const [currentIndex, setCurrentIndex] = useState(0);
+
+	const navigate = useNavigate();
 
 	const itemsPerPage = 3;
 	const totalItems = ratingHistory.length;
@@ -40,9 +43,10 @@ const Carousel = ({ ratingHistory }) => {
 						className="d-flex justify-content-center"
 					>
 						<Card
+							onClick={() => navigate(`/title/${rating.tConst}`)}
 							border="info"
 							className="bg-dark text-light"
-							style={{ width: '18rem' }}
+							style={{ width: '18rem', cursor: 'pointer' }}
 						>
 							<Card.Header>{rating.timestamp}</Card.Header>
 							<Card.Body>
