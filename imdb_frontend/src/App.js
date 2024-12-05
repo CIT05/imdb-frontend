@@ -30,7 +30,6 @@ function App() {
           <Route path='/title/:tconst' element={<Title />} />
         </Route>
         <Route path='/register' element={<div>elem 2</div>} />
-        <Route path='/loading' element={<Loading />} />
       </Routes>
     </BrowserRouter>
   );

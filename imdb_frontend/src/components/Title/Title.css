@@ -129,11 +129,23 @@
   font-weight: 500;
   display: flex;
   align-items: center;
+  cursor: pointer;
+}
+.title__limit-button:hover {
+  text-decoration: underline;
 }
 
 .title__cast-button {
   display: flex;
   justify-content: center;
+}
+
+.title__button-expand {
+  cursor: pointer;
+}
+
+.title__button-expand:hover {
+  text-decoration: underline;
 }
 
 .title__cast-button-icon {

@@ -290,7 +290,7 @@ const Title = () => {
                   (principal) => principal && principal.characters
                 ).length > 4 && (
                   <div
-                    className='title__cast-button'
+                    className='title__cast-button title__button-expand'
                     onClick={handleTopCastClick}
                   >
                     {limitCast ? (
@@ -336,7 +336,7 @@ const Title = () => {
                   (principal) => principal && principal.job
                 ).length > 4 && (
                   <div
-                    className='title__cast-button'
+                    className='title__cast-button title__button-expand'
                     onClick={handleProductionClick}
                   >
                     {limitProduction ? (
@@ -381,7 +381,7 @@ const Title = () => {
                           />
                         ))}
                     {title.knownFors.length > 4 && (
-                      <div onClick={handleKnownForClick}>
+                      <div className="title__button-expand" onClick={handleKnownForClick}>
                         {limitKnownFor ? (
                           <i className='bi bi-chevron-down title__cast-button-icon'>
                             {' '}
