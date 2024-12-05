@@ -3,10 +3,11 @@ import './PersonPreview.css';
 import Image from 'react-bootstrap/Image';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-const PersonPreview = ({ name, character, job, img, isSmall }) => {
+const PersonPreview = ({ name, character, job, img, isSmall, onClick }) => {
+
 
   return (
-    <div className='person-preview'>
+    <div className='person-preview' onClick={onClick}>
       {img ? (
         <Image
           src={img}

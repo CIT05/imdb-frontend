@@ -6,21 +6,22 @@ const fetchTitle = async (tconst) => {
 };
 
 const fetchPerson = async (url) => {
-  const nconst = url.split('/').pop();
-  const apiKey = process.env.REACT_APP_TMDB_API_KEY;
-  const photoUrl = `https://api.themoviedb.org/3/find/${nconst}?external_source=imdb_id&api_key=${apiKey}`;
-
   return fetch(url)
     .then((response) => response.json())
     .then(async (data) => {
       return {
         ...data,
-        photoUrl: await fetchPersonPhoto(photoUrl),
+        nconst: url.split('/').pop(),
+        photoUrl: await fetchPersonPhoto(url),
       };
     });
 };
 
-const fetchPersonPhoto = async (photoUrl) => {
+const fetchPersonPhoto = async (personUrl) => {
+  const nconst = personUrl.split('/').pop();
+  const apiKey = process.env.REACT_APP_TMDB_API_KEY;
+  const photoUrl = `https://api.themoviedb.org/3/find/${nconst}?external_source=imdb_id&api_key=${apiKey}`;
+
   return fetch(photoUrl)
     .then((response) => response.json())
     .then((data) => {
@@ -43,10 +44,12 @@ const getTitleAndPersons = async (tconst) => {
     production = await Promise.all(
       title.productionPersons.map(async (productionPerson) => {
         if (productionPerson.url) {
-          const person = await fetchPerson(productionPerson.url);
+          const photoUrl = await fetchPersonPhoto(productionPerson.url);
           return {
-            person,
+            nconst: productionPerson.url.split('/').pop(),
+            primaryName: productionPerson.primaryName,
             roleId: productionPerson.roleId,
+            photoUrl,
           };
         }
         return null;
@@ -60,9 +63,17 @@ const getTitleAndPersons = async (tconst) => {
 
   if (title.knownFors && title.knownFors.length > 0) {
     knownFors = await Promise.all(
-      title.knownFors.map((knownFors) => {
+      title.knownFors.map(async (knownFors) => {
         if (knownFors.url) {
-          return fetchPerson(knownFors.url);
+          const nconst = knownFors.url.split('/').pop();
+
+          const photoUrl = await fetchPersonPhoto(knownFors.url);
+          return {
+            nconst,
+            url: knownFors.url,
+            primaryName: knownFors.primaryName,
+            photoUrl,
+          };
         }
         return null;
       })
@@ -75,62 +86,62 @@ const getTitleAndPersons = async (tconst) => {
     principals,
     knownFors,
   };
-  console.log(titleAndPersonsObject);
+  console.log('titleAndPersons', titleAndPersonsObject);
   return titleAndPersonsObject;
 };
 
 const handleTitlePrinciples = async (principals) => {
   return await Promise.all(
-    principals.map(async (principals) => {
-      if (principals.personUrl) {
-        const person = await fetchPerson(principals.personUrl);
+    principals.map(async (principal) => {
+      const person = {
+        ...principal,
+        person: {
+          ...principal.person,
+          nconst: principal.person.url.split('/').pop(),
+        },
+        photoUrl: await fetchPersonPhoto(principal.person.url),
+      };
 
-        if (principals.characters) {
-          if (!principals.characters.includes('segment')) {
-            try {
-              const cleanedString = principals.characters
-                .slice(2, -2)
-                .replace(/'/g, '"');
+      if (person.characters) {
+        if (!person.characters.includes('segment')) {
+          try {
+            const cleanedString = person.characters
+              .slice(2, -2)
+              .replace(/'/g, '"');
 
-              const characterArray = [cleanedString];
+            const characterArray = [cleanedString];
 
-              principals.characters = characterArray;
-            } catch (e) {
-              console.error('Error processing principals.characters:');
-            }
-          } else {
-            try {
-              const cleanedString = principals.characters
-                .slice(2, -2)
-                .replace(/'/g, '"');
-
-              const regex = /^([^()]+)\s\(segment\s"([^"]+)"\)$/;
-              const match = cleanedString.match(regex);
-
-              if (match) {
-                principals.characters = {
-                  characters: match[1].trim(),
-                  segment: match[2].trim(),
-                };
-              } else {
-                throw new Error(
-                  "String format didn't match the expected pattern"
-                );
-              }
-            } catch (e) {
-              console.error('Error parsing segment/character:', e);
-            }
+            person.characters = characterArray;
+          } catch (e) {
+            console.error('Error processing person.characters:');
           }
-          return {
-            ...principals,
-            person,
-          };
+        } else {
+          try {
+            const cleanedString = person.characters
+              .slice(2, -2)
+              .replace(/'/g, '"');
+
+            const regex = /^([^()]+)\s\(segment\s"([^"]+)"\)$/;
+            const match = cleanedString.match(regex);
+
+            if (match) {
+              person.characters = {
+                characters: match[1].trim(),
+                segment: match[2].trim(),
+              };
+            } else {
+              throw new Error(
+                "String format didn't match the expected pattern"
+              );
+            }
+          } catch (e) {
+            console.error('Error parsing segment/character:', e);
+          }
         }
-        return {
-          ...principals,
-          person,
-        };
+
+        return person;
       }
+      return person;
     })
   );
 };

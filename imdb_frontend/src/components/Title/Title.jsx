@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { useEffect, useState } from 'react';
-import { Stack } from 'react-bootstrap';
+import { Stack, Button } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -12,6 +12,7 @@ import './Title.css';
 import PersonPreview from '../Person/PersonPreview.jsx';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Episode from './Episode/Episode.jsx';
+import Loading from '../loading/Loading.jsx';
 
 var Star = require('../../assets/star.png');
 
@@ -23,6 +24,7 @@ const Title = () => {
   const [limitKnownFor, setLimitKnownFor] = useState(true);
   const [limitDirectors, setLimitDirectors] = useState(true);
   const [limitWriters, setLimitWriters] = useState(true);
+  const [episodeFirstIndex, setEpisodeFirstIndex] = useState(0);
 
   const [title, setTitle] = useState({});
 
@@ -51,6 +53,31 @@ const Title = () => {
   const handleWritersClick = () => {
     setLimitWriters(!limitWriters);
   };
+
+  const handleNextEpisode = () => {
+    const episodesLength = title.episodes.length;
+    if (episodeFirstIndex + 3 >= episodesLength) {
+      setEpisodeFirstIndex(episodesLength - 1);
+    } else {
+      setEpisodeFirstIndex(episodeFirstIndex + 3);
+    }
+  };
+
+  const handlePreviousEpisode = () => {
+    if (episodeFirstIndex - 3 < 0) {
+      setEpisodeFirstIndex(0);
+    } else {
+      setEpisodeFirstIndex(episodeFirstIndex - 3);
+    }
+  };
+
+  const goToTitlePage = (tconst) => {
+    window.location.href = `/title/${tconst}`;
+  }
+
+  const goToPerson = (nconst) => {
+    window.location.href = `/person/${nconst}`;
+  }
 
   return (
     <>
@@ -155,56 +182,78 @@ const Title = () => {
               <div className='title__directors-and-writers mb-2'>
                 {title.productionPersons && (
                   <ul className='list'>
-                    {Array.isArray(title.productionPersons) && title.productionPersons
-                      .filter(
-                        (productionPerson) => productionPerson && productionPerson.roleId === 37
-                      )
-                      .slice(0, limitDirectors ? 5 : undefined)
-                      .map((productionPerson) => (
-                        <li
-                          className='text-info list__element'
-                          key={
-                            productionPerson.roleId +
-                            productionPerson.person.url
-                          }
+                    {Array.isArray(title.productionPersons) &&
+                      title.productionPersons
+                        .filter(
+                          (productionPerson) =>
+                            productionPerson && productionPerson.roleId === 37
+                        )
+                        .slice(0, limitDirectors ? 5 : undefined)
+                        .map((productionPerson) => (
+                          <li
+                            onClick={() => goToPerson(productionPerson.nconst)}
+                            className='text-info list__element'
+                            key={
+                              productionPerson.roleId +
+                              productionPerson.primaryName
+                            }
+                          >
+                            {productionPerson.primaryName}
+                          </li>
+                        ))}
+                    {title.productionPersons &&
+                      title.productionPersons.filter(
+                        (productionPerson) =>
+                          productionPerson && productionPerson.roleId === 37
+                      ).length > 5 && (
+                        <span
+                          className='title__limit-button text-secondary'
+                          onClick={handleDirectorsClick}
                         >
-                          {productionPerson.person.primaryName}
-                        </li>
-                      ))}
-                       { title.productionPersons && title.productionPersons.filter((productionPerson) => productionPerson && productionPerson.roleId === 37).length > 5 && (
-                        
-                        <span className="title__limit-button text-secondary" onClick={handleDirectorsClick}>{limitDirectors ? 'Show More' : 'Show Less'}...</span>
-                       )}
+                          {limitDirectors ? 'Show More' : 'Show Less'}...
+                        </span>
+                      )}
                   </ul>
                 )}
               </div>
               <span className='title__section-header'>Writers</span>
               <div className='title__directors-and-writers'>
                 <ul className='list'>
-                {title.productionPersons && (
-                  <ul className='list'>
-                    {Array.isArray(title.productionPersons) && title.productionPersons
-                      .filter(
-                        (productionPerson) => productionPerson && productionPerson.roleId === 28
-                      )
-                      .slice(0, limitWriters ? 5 : undefined)
-                      .map((productionPerson) => (
-                        <li
-                          className='text-info list__element'
-                          key={
-                            productionPerson.roleId +
-                            productionPerson.person.url
-                          }
-                        >
-                          {productionPerson.person.primaryName}
-                        </li>
-                      ))}
-                        { title.productionPersons && title.productionPersons.filter((productionPerson) => productionPerson && productionPerson.roleId === 28).length > 5 && (
-                        
-                        <span className="title__limit-button text-secondary" onClick={handleDirectorsClick}>{limitDirectors ? 'Show More' : 'Show Less'}...</span>
-                       )}
-                  </ul>
-                )}
+                  {title.productionPersons && (
+                    <ul className='list'>
+                      {Array.isArray(title.productionPersons) &&
+                        title.productionPersons
+                          .filter(
+                            (productionPerson) =>
+                              productionPerson && productionPerson.roleId === 28
+                          )
+                          .slice(0, limitWriters ? 5 : undefined)
+                          .map((productionPerson) => (
+                            <li
+                              onClick={() => goToPerson(productionPerson.nconst)}
+                              className='text-info list__element'
+                              key={
+                                productionPerson.roleId +
+                                productionPerson.primaryName
+                              }
+                            >
+                              {productionPerson.primaryName}
+                            </li>
+                          ))}
+                      {title.productionPersons &&
+                        title.productionPersons.filter(
+                          (productionPerson) =>
+                            productionPerson && productionPerson.roleId === 28
+                        ).length > 5 && (
+                          <span
+                            className='title__limit-button text-secondary'
+                            onClick={handleWritersClick}
+                          >
+                            {limitWriters ? 'Show More' : 'Show Less'}...
+                          </span>
+                        )}
+                    </ul>
+                  )}
                 </ul>
               </div>
             </Row>
@@ -224,18 +273,22 @@ const Title = () => {
                         : castWithCharacters;
 
                       return displayedCast.map((principal) => (
+                    
                         <PersonPreview
+                          onClick={() => goToPerson(principal.person.nconst)}
                           key={principal.url}
                           name={principal.person?.primaryName || 'Unknown'}
                           character={principal.characters}
-                          img={principal.person?.photoUrl}
+                          img={principal.photoUrl}
                         />
+                    
                       ));
                     })()}
                 </div>
 
-                {title.principals?.filter((principal) => principal && principal.characters)
-                  .length > 4 && (
+                {title.principals?.filter(
+                  (principal) => principal && principal.characters
+                ).length > 4 && (
                   <div
                     className='title__cast-button'
                     onClick={handleTopCastClick}
@@ -269,17 +322,19 @@ const Title = () => {
 
                       return displayedCast.map((principal) => (
                         <PersonPreview
+                          onClick={() => goToPerson(principal.person.nconst)}
                           key={principal.url}
                           name={principal.person?.primaryName || 'Unknown'}
                           job={principal.job}
-                          img={principal.person?.photoUrl}
+                          img={principal.photoUrl}
                         />
                       ));
                     })()}
                 </div>
 
-                {title.principals?.filter((principal) => principal && principal.job)
-                  .length > 4 && (
+                {title.principals?.filter(
+                  (principal) => principal && principal.job
+                ).length > 4 && (
                   <div
                     className='title__cast-button'
                     onClick={handleProductionClick}
@@ -309,6 +364,7 @@ const Title = () => {
                           .slice(0, 4)
                           .map((person) => (
                             <PersonPreview
+                              onClick={() => goToPerson(person.nconst)}
                               key={person.url}
                               name={person.primaryName}
                               img={person.photoUrl}
@@ -317,6 +373,7 @@ const Title = () => {
                           ))
                       : title.knownFors.map((person) => (
                           <PersonPreview
+                            onClick={() => goToPerson(person.nconst)}
                             key={person.url}
                             name={person.primaryName}
                             img={person.photoUrl}
@@ -345,28 +402,42 @@ const Title = () => {
 
             {title.episodes.length > 0 && (
               <Row>
-                <Col>
+                <div>
                   <span className='title__section-header--large'>Episodes</span>
                   <span className='title__episodes-number mx-2'>
                     {title.episodes.length}
                   </span>
+                </div>
+                <Stack direction='horizontal'>
+                  <Button
+                    variant='outline-light'
+                    onClick={handlePreviousEpisode}
+                  >
+                    <i className='bi bi-caret-left-fill'></i>
+                  </Button>
                   <div className='title__episodes'>
-                    {title.episodes.slice(0, 3).map((episode) => (
-                      <div key={episode.tconst}>
-                        <Episode
-                          season={episode.seasonNumber}
-                          episodeNumber={episode.episodeNumber}
-                        ></Episode>
-                      </div>
-                    ))}
+                    {title.episodes
+                      .slice(episodeFirstIndex, episodeFirstIndex + 3)
+                      .map((episode) => (
+                        <div className="title__episode" key={episode.tconst} onClick={() => goToTitlePage(episode.tconst)}>
+                          <Episode
+                            season={episode.seasonNumber}
+                            episodeNumber={episode.episodeNumber}
+                          ></Episode>
+                        </div>
+                      ))}
                   </div>
-                </Col>
+
+                  <Button variant='outline-light' onClick={handleNextEpisode}>
+                    <i className='bi bi-caret-right-fill'></i>
+                  </Button>
+                </Stack>
               </Row>
             )}
           </Container>
         </div>
       ) : (
-        <p>Loading...</p>
+        <Loading />
       )}
     </>
   );

@@ -8,6 +8,7 @@ import Login from './components/user/Login';
 import Profile from './components/user/Profile';
 import Title from './components/Title/Title';
 import React from 'react';
+import Loading from './components/loading/Loading';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path='/title/:tconst' element={<Title />} />
         </Route>
         <Route path='/register' element={<div>elem 2</div>} />
+        <Route path='/loading' element={<Loading />} />
       </Routes>
     </BrowserRouter>
   );
