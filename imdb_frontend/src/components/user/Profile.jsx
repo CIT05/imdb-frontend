@@ -49,16 +49,23 @@ const Profile = () => {
 									/>
 								</Col>
 
-								<Col md={7}>
+								<Col className="p-0" md={7}>
 									<Row>
-										<h2 className="p-0">
-											Welcome, {loggedInUser}
-										</h2>
+										<h2>Welcome IMDB Member</h2>
+									</Row>
+									<Row>
+										<h4>Username:{userInfo.username}</h4>
+									</Row>
+									<Row>
+										<p>
+											Language preference:{' '}
+											{userInfo.language}
+										</p>
 									</Row>
 									<Row>
 										<Button
 											variant="outline-info"
-											className="w-25 my-2"
+											className="w-25 mx-3 my-2"
 										>
 											Edit Profile
 										</Button>
@@ -66,7 +73,7 @@ const Profile = () => {
 									<Row>
 										<Button
 											variant="outline-danger"
-											className="w-25 my-2"
+											className="w-25 mx-3 my-2"
 										>
 											Delete Account
 										</Button>

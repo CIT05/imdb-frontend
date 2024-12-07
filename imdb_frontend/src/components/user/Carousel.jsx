@@ -79,7 +79,7 @@ const Carousel = ({ ratingHistory }) => {
 			<Row className="d-flex justify-content-between align-items-center">
 				<Col xs="auto">
 					<Button variant="outline-light" onClick={handlePrev}>
-						<i class="bi bi-caret-left-fill"></i>
+						<i className="bi bi-caret-left-fill"></i>
 					</Button>
 				</Col>
 				{visibleItems.map((rating) => (
@@ -99,8 +99,8 @@ const Carousel = ({ ratingHistory }) => {
 								{formatTimestamp(rating.timestamp)}
 							</Card.Header>
 							<Card.Body className={`${styles.cardBody}`}>
-								<Card.Title>
-									<div className="d-flex align-items-end">
+								<Card.Title className="w-100">
+									<div className="d-flex justify-content-between align-items-end">
 										<span>
 											{titles[rating.tConst]
 												?.primaryTitle || 'Loading...'}
@@ -117,7 +117,7 @@ const Carousel = ({ ratingHistory }) => {
 				))}
 				<Col xs="auto">
 					<Button variant="outline-light" onClick={handleNext}>
-						<i class="bi bi-caret-right-fill"></i>
+						<i className="bi bi-caret-right-fill"></i>
 					</Button>
 				</Col>
 			</Row>

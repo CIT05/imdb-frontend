@@ -1,51 +1,75 @@
 import { Form, Button, Stack, Container } from 'react-bootstrap';
 import styles from './style.module.css';
-import * as Yup from 'yup';
-import * as formik from 'formik';
 import { useState, useEffect } from 'react';
 import UserService from '../../services/UserService';
 
 const Signup = () => {
-	const { Formik } = formik;
-
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState('');
-	const [countries, setCountries] = useState([]);
-
-	const validationSchema = Yup.object({
-		email: Yup.string()
-			.email('Invalid email address')
-			.required('Email is required'),
-		password: Yup.string()
-			.min(6, 'Password must be at least 6 characters')
-			.required('Password is required'),
-		repeatPassword: Yup.string()
-			.oneOf([Yup.ref('password'), null], 'Passwords must match')
-			.required('Repeat Password is required'),
-		language: Yup.string().required('Language selection is required'),
+	const [formData, setFormData] = useState({
+		username: '',
+		password: '',
+		repeatPassword: '',
+		language: '',
 	});
+	const [errors, setErrors] = useState({});
+	const [loading, setLoading] = useState(false);
+	const [countries, setCountries] = useState([]);
+	const [error, setError] = useState('');
 
-	const handleSubmit = async (values) => {
+	function handleChange(e) {
+		const { name, value } = e.target;
+		setFormData((prev) => ({ ...prev, [name]: value }));
+	}
+
+	function validateForm() {
+		const newErrors = {};
+
+		if (!formData.username.trim()) {
+			newErrors.username = 'Username is required';
+		}
+		if (!formData.password) {
+			newErrors.password = 'Password is required';
+		} else if (formData.password.length < 6) {
+			newErrors.password = 'Password must be at least 6 characters';
+		}
+		if (formData.password !== formData.repeatPassword) {
+			newErrors.repeatPassword = 'Passwords must match';
+		}
+		if (!formData.language) {
+			newErrors.language = 'Language selection is required';
+		}
+
+		setErrors(newErrors);
+		return Object.keys(newErrors).length === 0;
+	}
+
+	// Handle form submission
+	async function handleSubmit(e) {
+		e.preventDefault();
+
+		if (!validateForm()) {
+			return;
+		}
+
 		setLoading(true);
 		setError('');
 
 		try {
 			const userData = {
-				username: values.email,
-				password: values.password,
-				language: values.language,
+				username: formData.username,
+				password: formData.password,
+				language: formData.language,
 			};
 
 			const userService = new UserService();
 			await userService.signUp(userData);
 			console.log('User signed up successfully:', userData);
-		} catch (error) {
+		} catch (err) {
 			setError('An error occurred while signing up. Please try again.');
-			console.error(error);
+			console.error(err);
 		} finally {
 			setLoading(false);
 		}
-	};
+	}
 
 	useEffect(() => {
 		fetch('https://restcountries.com/v3.1/all')
@@ -57,11 +81,9 @@ const Signup = () => {
 						code: country.cca2.toLowerCase(),
 					}))
 					.sort((a, b) => a.name.localeCompare(b.name)); // Sort alphabetically
-				setCountries(countryData);
+				setCountries(countryData); // Save the processed data into state
 			})
-			.catch((error) =>
-				console.error('Error fetching country data:', error)
-			);
+			.catch((err) => console.error('Error fetching country data:', err));
 	}, []);
 
 	return (
@@ -71,140 +93,91 @@ const Signup = () => {
 			<Stack className="d-flex justify-content-center w-50 align-items-center text-light">
 				<h1 className="align-self-start">Sign Up</h1>
 				{error && <div className="alert alert-danger">{error}</div>}
-				<Formik
-					initialValues={{
-						email: '',
-						password: '',
-						repeatPassword: '',
-						language: '',
-					}}
-					validationSchema={validationSchema}
-					onSubmit={handleSubmit}
-				>
-					{({
-						handleSubmit,
-						handleChange,
-						handleBlur,
-						values,
-						touched,
-						errors,
-					}) => (
-						<Form
-							noValidate
-							onSubmit={handleSubmit}
-							className="w-100"
+				<Form noValidate onSubmit={handleSubmit} className="w-100">
+					<Form.Group className="mb-3" controlId="formBasicUsername">
+						<Form.Label>Username</Form.Label>
+						<Form.Control
+							type="text"
+							placeholder="Enter username"
+							name="username"
+							value={formData.username}
+							onChange={handleChange}
+							isInvalid={!!errors.username}
+						/>
+						<Form.Control.Feedback type="invalid">
+							{errors.username}
+						</Form.Control.Feedback>
+					</Form.Group>
+
+					<Form.Group className="mb-3" controlId="formBasicPassword">
+						<Form.Label>Password</Form.Label>
+						<Form.Control
+							type="password"
+							placeholder="Password"
+							name="password"
+							value={formData.password}
+							onChange={handleChange}
+							isInvalid={!!errors.password}
+						/>
+						<Form.Control.Feedback type="invalid">
+							{errors.password}
+						</Form.Control.Feedback>
+					</Form.Group>
+
+					<Form.Group
+						className="mb-3"
+						controlId="formBasicRepeatPassword"
+					>
+						<Form.Label>Repeat Password</Form.Label>
+						<Form.Control
+							type="password"
+							placeholder="Repeat Password"
+							name="repeatPassword"
+							value={formData.repeatPassword}
+							onChange={handleChange}
+							isInvalid={!!errors.repeatPassword}
+						/>
+						<Form.Control.Feedback type="invalid">
+							{errors.repeatPassword}
+						</Form.Control.Feedback>
+					</Form.Group>
+
+					<Form.Group
+						className="mb-5 w-50"
+						controlId="preferredLanguage"
+					>
+						<Form.Label>Preferred language</Form.Label>
+						<Form.Select
+							name="language"
+							value={formData.language}
+							onChange={handleChange}
+							isInvalid={!!errors.language}
 						>
-							<Form.Group
-								className="mb-3"
-								controlId="formBasicEmail"
-							>
-								<Form.Label>Email address</Form.Label>
-								<Form.Control
-									required
-									type="email"
-									placeholder="Enter email"
-									name="email"
-									value={values.email}
-									onChange={handleChange}
-									onBlur={handleBlur}
-									isInvalid={touched.email && !!errors.email}
-								/>
-								<Form.Control.Feedback type="invalid">
-									{errors.email}
-								</Form.Control.Feedback>
-								<Form.Text className="text-light">
-									Provide a valid email address
-								</Form.Text>
-							</Form.Group>
+							<option value="">
+								Choose your preferred language
+							</option>
+							{countries.map((country) => (
+								<option key={country.code} value={country.code}>
+									{country.name}
+								</option>
+							))}
+						</Form.Select>
+						<Form.Control.Feedback type="invalid">
+							{errors.language}
+						</Form.Control.Feedback>
+					</Form.Group>
 
-							<Form.Group
-								className="mb-3"
-								controlId="formBasicPassword"
-							>
-								<Form.Label>Password</Form.Label>
-								<Form.Control
-									required
-									type="password"
-									placeholder="Password"
-									name="password"
-									value={values.password}
-									onChange={handleChange}
-									onBlur={handleBlur}
-									isInvalid={
-										touched.password && !!errors.password
-									}
-								/>
-								<Form.Control.Feedback type="invalid">
-									{errors.password}
-								</Form.Control.Feedback>
-							</Form.Group>
-
-							<Form.Group
-								className="mb-3"
-								controlId="formBasicRepeatPassword"
-							>
-								<Form.Label>Repeat Password</Form.Label>
-								<Form.Control
-									required
-									type="password"
-									placeholder="Repeat Password"
-									name="repeatPassword"
-									value={values.repeatPassword}
-									onChange={handleChange}
-									onBlur={handleBlur}
-									isInvalid={
-										touched.repeatPassword &&
-										!!errors.repeatPassword
-									}
-								/>
-								<Form.Control.Feedback type="invalid">
-									{errors.repeatPassword}
-								</Form.Control.Feedback>
-							</Form.Group>
-
-							<Form.Group
-								className="mb-5 w-50"
-								controlId="preferredLanguage"
-							>
-								<Form.Label>Preferred language</Form.Label>
-								<Form.Select
-									name="language"
-									value={values.language}
-									onChange={handleChange}
-									onBlur={handleBlur}
-									isInvalid={
-										touched.language && !!errors.language
-									}
-								>
-									<option value="">
-										Choose your preferred language
-									</option>
-									{countries.map((country) => (
-										<option
-											key={country.code}
-											value={country.code}
-										>
-											{country.name}
-										</option>
-									))}
-								</Form.Select>
-								<Form.Control.Feedback type="invalid">
-									{errors.language}
-								</Form.Control.Feedback>
-							</Form.Group>
-							<Stack>
-								<Button
-									disabled={loading}
-									className="align-self-center w-25"
-									variant="outline-info"
-									type="submit"
-								>
-									{loading ? 'Signing Up...' : 'Sign Up'}
-								</Button>
-							</Stack>
-						</Form>
-					)}
-				</Formik>
+					<Stack>
+						<Button
+							disabled={loading}
+							className="align-self-center w-25"
+							variant="outline-info"
+							type="submit"
+						>
+							{loading ? 'Signing Up...' : 'Sign Up'}
+						</Button>
+					</Stack>
+				</Form>
 			</Stack>
 		</Container>
 	);

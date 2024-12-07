@@ -1,45 +1,57 @@
 import { Form, Button, Stack, Container } from 'react-bootstrap';
-import styles from './style.module.css';
-import * as Yup from 'yup';
-import * as formik from 'formik';
 import { useState } from 'react';
+import styles from './style.module.css';
 import UserService from '../../services/UserService';
 import { useUserContext } from '../../contexts/UserContext';
 
 const Login = () => {
-	const { Formik } = formik;
-
+	const [formData, setFormData] = useState({ username: '', password: '' });
+	const [errors, setErrors] = useState({});
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState('');
-
 	const { setLoggedInUser } = useUserContext();
 
-	const validationSchema = Yup.object({
-		email: Yup.string()
-			.email('Invalid email address')
-			.required('Email is required'),
-		password: Yup.string()
-			.min(6, 'Password must be at least 6 characters')
-			.required('Password is required'),
-	});
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+		setFormData((prev) => ({ ...prev, [name]: value }));
+	};
 
-	const handleSubmit = async (values) => {
-		setLoading(true);
+	const validateForm = () => {
+		const newErrors = {};
+
+		if (!formData.username.trim()) {
+			newErrors.username = 'Username is required';
+		}
+		if (!formData.password) {
+			newErrors.password = 'Password is required';
+		} else if (formData.password.length < 6) {
+			newErrors.password = 'Password must be at least 6 characters';
+		}
+
+		setErrors(newErrors);
+		return Object.keys(newErrors).length === 0;
+	};
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
 		setError('');
 
+		if (!validateForm()) return;
+
+		setLoading(true);
 		try {
 			const userData = {
-				username: values.email,
-				password: values.password,
+				username: formData.username,
+				password: formData.password,
 			};
 
 			const userService = new UserService();
 			await userService.logIn(userData);
 			console.log('User logged in successfully:', userData);
 			setLoggedInUser(userData.username);
-		} catch (error) {
+		} catch (err) {
 			setError('An error occurred while logging in. Please try again.');
-			console.error(error);
+			console.error(err);
 		} finally {
 			setLoading(false);
 		}
@@ -52,84 +64,48 @@ const Login = () => {
 			<Stack className="d-flex justify-content-center w-50 align-items-center text-light">
 				<h1 className="align-self-start">Log In</h1>
 				{error && <div className="alert alert-danger">{error}</div>}
-				<Formik
-					initialValues={{
-						email: '',
-						password: '',
-					}}
-					validationSchema={validationSchema}
-					onSubmit={handleSubmit}
-				>
-					{({
-						handleSubmit,
-						handleChange,
-						handleBlur,
-						values,
-						touched,
-						errors,
-					}) => (
-						<Form
-							noValidate
-							onSubmit={handleSubmit}
-							className="w-100"
-						>
-							<Form.Group
-								className="mb-3"
-								controlId="formBasicEmail"
-							>
-								<Form.Label>Email address</Form.Label>
-								<Form.Control
-									required
-									type="email"
-									placeholder="Enter email"
-									name="email"
-									value={values.email}
-									onChange={handleChange}
-									onBlur={handleBlur}
-									isInvalid={touched.email && !!errors.email}
-								/>
-								<Form.Control.Feedback type="invalid">
-									{errors.email}
-								</Form.Control.Feedback>
-								<Form.Text className="text-light">
-									Provide the email address you signed up with
-								</Form.Text>
-							</Form.Group>
+				<Form noValidate onSubmit={handleSubmit} className="w-100">
+					<Form.Group className="mb-3" controlId="formBasicUsername">
+						<Form.Label>Username</Form.Label>
+						<Form.Control
+							type="text"
+							placeholder="Enter username"
+							name="username"
+							value={formData.username}
+							onChange={handleChange}
+							isInvalid={!!errors.username}
+						/>
+						<Form.Control.Feedback type="invalid">
+							{errors.username}
+						</Form.Control.Feedback>
+					</Form.Group>
 
-							<Form.Group
-								className="mb-3"
-								controlId="formBasicPassword"
-							>
-								<Form.Label>Password</Form.Label>
-								<Form.Control
-									required
-									type="password"
-									placeholder="Password"
-									name="password"
-									value={values.password}
-									onChange={handleChange}
-									onBlur={handleBlur}
-									isInvalid={
-										touched.password && !!errors.password
-									}
-								/>
-								<Form.Control.Feedback type="invalid">
-									{errors.password}
-								</Form.Control.Feedback>
-							</Form.Group>
-							<Stack>
-								<Button
-									disabled={loading}
-									className="align-self-center w-25"
-									variant="outline-info"
-									type="submit"
-								>
-									{loading ? 'Logging In...' : 'Log In'}
-								</Button>
-							</Stack>
-						</Form>
-					)}
-				</Formik>
+					<Form.Group className="mb-3" controlId="formBasicPassword">
+						<Form.Label>Password</Form.Label>
+						<Form.Control
+							type="password"
+							placeholder="Password"
+							name="password"
+							value={formData.password}
+							onChange={handleChange}
+							isInvalid={!!errors.password}
+						/>
+						<Form.Control.Feedback type="invalid">
+							{errors.password}
+						</Form.Control.Feedback>
+					</Form.Group>
+
+					<Stack>
+						<Button
+							disabled={loading}
+							className="align-self-center w-25"
+							variant="outline-info"
+							type="submit"
+						>
+							{loading ? 'Logging In...' : 'Log In'}
+						</Button>
+					</Stack>
+				</Form>
 			</Stack>
 		</Container>
 	);
