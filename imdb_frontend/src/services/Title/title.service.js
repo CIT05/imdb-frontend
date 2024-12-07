@@ -5,23 +5,10 @@ const fetchTitle = async (tconst) => {
     .then((data) => data);
 };
 
-const fetchPerson = async (url) => {
-  return fetch(url)
-    .then((response) => response.json())
-    .then(async (data) => {
-      return {
-        ...data,
-        nconst: url.split('/').pop(),
-        photoUrl: await fetchPersonPhoto(url),
-      };
-    });
-};
-
 const fetchPersonPhoto = async (personUrl) => {
   const nconst = personUrl.split('/').pop();
   const apiKey = process.env.REACT_APP_TMDB_API_KEY;
   const photoUrl = `https://api.themoviedb.org/3/find/${nconst}?external_source=imdb_id&api_key=${apiKey}`;
-
   return fetch(photoUrl)
     .then((response) => response.json())
     .then((data) => {

@@ -79,13 +79,18 @@ const Title = () => {
     window.location.href = `/person/${nconst}`;
   }
 
+  const goToGenre = (genreId) => {
+    window.location.href = `/genres/${genreId}`;
+  }
+
+
   return (
     <>
       {title && title.rating && title.url ? (
         <div className='title__container'>
           <Container fluid className='title__content'>
             <Row className='title__row'>
-              <Col s={12} md={6}>
+              <Col>
                 <span className='title__primary-title'>
                   {title.primaryTitle}
                 </span>
@@ -125,8 +130,30 @@ const Title = () => {
                   </li>
                 </ul>
               </Col>
+            </Row>
+            <Row>
               <Col s={12} md={6}>
-                <Stack direction='horizontal'>
+                <Image key={title + '_poster'} src={title.poster} alt={title} />
+                <div className='title__badge'>
+                  {title.genres.map((genre) => (
+                    <h5 key={genre.genreId}>
+                      <Badge
+                        pill
+                        bg='secondary'
+                        text='white'
+                        className='title__badge-element'
+                        onClick={() => goToGenre(genre.genreId)}
+                      >
+                        {' '}
+                        {genre.genreName}
+                      </Badge>
+                    </h5>
+                  ))}
+                </div>
+              </Col>
+              <Col s={12} md={6}>
+              <Col s={12} md={6}>
+                <Stack direction='horizontal' className="title__rating-container">
                   {title.rating && (
                     <Stack direction='vertical'>
                       <span className='title__section-header'>Rating</span>
@@ -153,27 +180,6 @@ const Title = () => {
                   </Stack>
                 </Stack>
               </Col>
-            </Row>
-            <Row>
-              <Col s={12} md={6}>
-                <Image key={title + '_poster'} src={title.poster} alt={title} />
-                <div className='title__badge'>
-                  {title.genres.map((genre) => (
-                    <h5 key={genre.genreId}>
-                      <Badge
-                        pill
-                        bg='secondary'
-                        text='white'
-                        className='title__badge-element'
-                      >
-                        {' '}
-                        {genre.genreName}
-                      </Badge>
-                    </h5>
-                  ))}
-                </div>
-              </Col>
-              <Col s={12} md={6}>
                 <p className='title__plot'>{title.plot} </p>
               </Col>
             </Row>

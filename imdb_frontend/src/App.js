@@ -8,7 +8,8 @@ import Login from './components/user/Login';
 import Profile from './components/user/Profile';
 import Title from './components/Title/Title';
 import React from 'react';
-import Loading from './components/loading/Loading';
+import AllGenres from './components/genres/allGenres/AllGenres';
+import SingularGenre from './components/genres/singularGenre/SingularGenre';
 
 function App() {
   return (
@@ -28,6 +29,10 @@ function App() {
           <Route path='login' element={<Login />} />
           <Route path='profile' element={<Profile />} />
           <Route path='/title/:tconst' element={<Title />} />
+          <Route path='/genres'>
+            <Route index element={<AllGenres />} />
+            <Route path=':genreId' element={<SingularGenre />} />
+          </Route>
         </Route>
         <Route path='/register' element={<div>elem 2</div>} />
       </Routes>

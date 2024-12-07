@@ -74,6 +74,10 @@
   font-weight: 600;
 }
 
+.title__rating-container {
+  margin-bottom: 2rem;
+}
+
 .title__rating {
   font-size: 1.1rem;
   font-weight: bold;
@@ -113,6 +117,7 @@
 
 .title__badge-element {
   width: 100%;
+  cursor: pointer;
 }
 
 .title__plot-and-production {
@@ -121,6 +126,7 @@
 }
 
 .title__plot {
+  margin-top: auto;
   font-weight: 500;
 }
 
