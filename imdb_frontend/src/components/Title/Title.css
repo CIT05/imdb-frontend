@@ -115,6 +115,13 @@
   grid-template-columns: repeat(6, 1fr);
 }
 
+.title__alternatives {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  cursor: pointer;
+}
+
 .title__badge-element {
   width: 100%;
   cursor: pointer;

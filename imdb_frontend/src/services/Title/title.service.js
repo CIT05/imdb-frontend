@@ -20,6 +20,13 @@ const fetchPersonPhoto = async (personUrl) => {
     });
 };
 
+const getTitleAlternatives = async (tconst) => {
+  const titleAlternatives = await fetchTitle(tconst).then(
+    (data) => data.titleAlternatives
+  );
+  return titleAlternatives;
+};
+
 const getTitleAndPersons = async (tconst) => {
   const title = await fetchTitle(tconst);
 
@@ -133,4 +140,4 @@ const handleTitlePrinciples = async (principals) => {
   );
 };
 
-export { getTitleAndPersons };
+export { getTitleAndPersons, getTitleAlternatives };

@@ -34,7 +34,7 @@ const AllGenres = () => {
         <div className="all-genres__container">
             <Container>
                 <Row>
-                    <h1>All Genres</h1>
+                    <h1>All Genres ({genres.numberOfItems})</h1>
                 </Row>
                 {genres.items.map((genre) => {
                     return (

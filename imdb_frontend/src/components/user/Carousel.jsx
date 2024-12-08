@@ -26,8 +26,11 @@ const Carousel = ({ ratingHistory }) => {
 		ratingHistory[(currentIndex + 2) % totalItems],
 	];
 
+	console.log(ratingHistory);
+
 	return (
-		<Container className="mt-4">
+		(ratingHistory && ratingHistory.length > 0 && 
+				<Container className="mt-4">
 			<Row className="d-flex justify-content-between align-items-center">
 				<Col xs="auto">
 					<Button variant="outline-light" onClick={handlePrev}>
@@ -70,7 +73,8 @@ const Carousel = ({ ratingHistory }) => {
 				</Col>
 			</Row>
 		</Container>
-	);
+	)
+)
 };
 
 export default Carousel;
