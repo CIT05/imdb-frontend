@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect} from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Accordion from 'react-bootstrap/Accordion';
 import Button from 'react-bootstrap/Button';
@@ -12,6 +12,7 @@ const AdvancedSearch = () => {
     const [activeTab, setActiveTab] = useState('titles');
     const [searchType, setSearchType] = useState('');
     const [results, setResults] = useState([]);
+    const [visibleCount, setVisibleCount] = useState(10);
 
     const handleSearchTitle = useCallback(() => {
         const params = {};
@@ -70,6 +71,9 @@ const AdvancedSearch = () => {
     }, [results, searchType, activeTab]);
     
 
+    useEffect(() => {
+        setResults([]);
+    }, [activeTab]);
     return (
         <>
         <div className={style.advancedContainer}>
@@ -88,10 +92,10 @@ const AdvancedSearch = () => {
                 onSelect={(selectedKey) => setActiveTab(selectedKey)}
             >
                 <Nav.Item >
-                    <Nav.Link className={[style.navItem]} eventKey="titles"><i class="bi bi-film"></i> Titles</Nav.Link>
+                    <Nav.Link className={[style.navItem]} eventKey="titles"><i className="bi bi-film"></i> Titles</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                    <Nav.Link className={[style.navItem]}  eventKey="celebs"><i class="bi bi-person-heart"></i> Celebs</Nav.Link>
+                    <Nav.Link className={[style.navItem]}  eventKey="celebs"><i className="bi bi-person-heart"></i> Celebs</Nav.Link>
                 </Nav.Item>
             </Nav>
             </div>
@@ -218,9 +222,8 @@ const AdvancedSearch = () => {
 
             {results.length > 0  && !loading && (
                 <>
-
                 <div className={style.filterContainer}>
-            <h4>Total results:{results.length}</h4>
+            <h4>Total results: {results.length}</h4>
             <Dropdown >
                             <Dropdown.Toggle variant="info" id="dropdown-basic">
                                 Sort by
@@ -238,7 +241,7 @@ const AdvancedSearch = () => {
                         </Dropdown>
             </div>
             <div className={style.resultsContainer}>
-    {(searchType ? sortedResults() : results).map((result, index) => {
+        {(searchType ? sortedResults() : results).slice(0, visibleCount).map((result, index) => {
         const id = result?.url?.split('/').pop();
         return (
             <Card style={{ width: '18rem' }} key={index}>
@@ -261,7 +264,16 @@ const AdvancedSearch = () => {
     })}
 </div>
 
-                    </>
+    {visibleCount < results.length && (
+        <div className={style.seeMoreContainer}>
+           <Button variant="outline-info" type="button" 
+                className={style.seeMoreButton}
+                onClick={() => setVisibleCount((prevCount) => prevCount + 10)}
+            >
+                See More <i className="bi bi-arrow-down"></i>
+            </Button>
+        </div>
+    )}        </>
             )}
   
         </>
