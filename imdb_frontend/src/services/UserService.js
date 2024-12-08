@@ -25,7 +25,7 @@ class UserService {
         }
     }
 
-	async logIn(userData) {
+    async logIn(userData) {
         try {
             const response = await fetch(`${this.baseURL}/login`, {  // Append /login to the base URL
                 method: 'POST',
@@ -40,7 +40,7 @@ class UserService {
             }
 
             const data = await response.json();
-            return data;
+            return data.token;  // Return the token from the response data
         } catch (error) {
             console.error('There was a problem logging in.', error);
             throw error;

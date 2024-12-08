@@ -1,8 +1,9 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
+import { useUserContext } from '../../contexts/UserContext';
 import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Spinner from 'react-bootstrap/Spinner';
-import searchServiceInstance from '../../services/SearchService';
+import searchServiceInstance from '../../services/Search/SearchService';
 
 const SearchBar = () => {
     const [query, setQuery] = useState('');
@@ -11,6 +12,7 @@ const SearchBar = () => {
     const [showResults, setShowResults] = useState(false);
     const [searchType, setSearchType] = useState('default');
     const searchContainerRef = useRef(null);
+	const { loggedInUser } = useUserContext();
 
     const handleSearch = useCallback(async () => {
         if (!query.trim()) {
@@ -22,12 +24,23 @@ const SearchBar = () => {
 
         try {
             let data;
-            if (searchType === 'titles') {
-                data = await searchServiceInstance.searchTitle(query);
-            } else if (searchType === 'celebs') {
-                data = await searchServiceInstance.searchName(query);
+
+            if (loggedInUser) {
+                if (searchType === 'titles') {
+                    data = await searchServiceInstance.loginSearchTitle(3,query, loggedInUser);
+                } else if (searchType === 'celebs') {
+                    data = await searchServiceInstance.loginSearchName(3, query, loggedInUser);
+                } else {
+                    data = await searchServiceInstance.search(query);
+                }
             } else {
-                data = await searchServiceInstance.search(query);
+                if (searchType === 'titles') {
+                    data = await searchServiceInstance.searchTitle(query);
+                } else if (searchType === 'celebs') {
+                    data = await searchServiceInstance.searchName(query);
+                } else {
+                    data = await searchServiceInstance.search(query);
+                }
             }
 
             setResults(data);
@@ -37,7 +50,7 @@ const SearchBar = () => {
         } finally {
             setLoading(false);
         }
-    }, [query, searchType]);
+    }, [loggedInUser, query, searchType]);
 
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
@@ -58,6 +71,11 @@ const SearchBar = () => {
         };
     }, []);
 
+    useEffect(() => {
+        setResults([]); 
+    }, [searchType]);
+    
+
     return (
         <div className="container py-4">
             <div className="row">
@@ -65,7 +83,7 @@ const SearchBar = () => {
                     <div className="input-group">
                         <Dropdown>
                             <Dropdown.Toggle variant="light" id="dropdown-basic">
-                                {searchType === 'titles' ? 'Titles' : 'Default'}
+                                {searchType === 'titles' ? 'Titles' : searchType === 'celebs' ? 'Celebs' : 'Default'}
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu>
@@ -77,6 +95,10 @@ const SearchBar = () => {
                                 </Dropdown.Item>
                                 <Dropdown.Item onClick={() => setSearchType('celebs')}>
                                     Celebs
+                                </Dropdown.Item>
+        
+                                <Dropdown.Item onClick={() => window.location.href = '/advanced-search'}>
+                                Advanced Search <i class="bi bi-arrow-right"></i>
                                 </Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
@@ -100,7 +122,7 @@ const SearchBar = () => {
                             ref={searchContainerRef}
                             className="list-group mb-3"
                             style={{
-                                maxHeight: '150px',
+                                maxHeight: '300px',
                                 overflow: 'auto',
                                 position: 'absolute',
                                 width: '28rem',
@@ -113,37 +135,57 @@ const SearchBar = () => {
                                     </Spinner>
                                 </div>
                             ) : results.length > 0 ? (
-                                results.map((result, index) => (
-                                    <div key={index} className="list-group-item">
-                                        <div className="row align-items-center">
-                                            {result.title?.poster &&            
-                                            <div className="col-auto">
-                                                <img
-                                                    src={result.title?.poster}
-                                                    alt={result.title?.primaryTitle}
-                                                    style={{ width: 'auto', height: '75px' }}
-                                                />
-                                            </div>
-}
-                                            <div className="col">
-                                                <a
-                                                    href={result.title?.url}
-                                                    className="text-decoration-none"
-                                                >
+                                results.map((result, index) => {
+                                    let id = '';
+                                    let titleCelebsId = '';
+                                    let content = null;
+                                
+                                    if (searchType === 'titles') {
+                                        id = result?.title?.url?.split('/').pop() || '';
+                                        content = (
+                                            <>
+                                                <a href={`/title/${id}`} className="text-decoration-none">
+                                                    {result?.title}
+                                                </a>
+                                            </>
+                                        );
+                                    } else if (searchType === 'celebs') {
+                                        titleCelebsId = result?.url?.split('/').pop();
+                                        content = (
+                                            <>
+                                                <a href={`/person/${titleCelebsId}`} className="text-decoration-none">
+                                                    {result?.actorName || 'Unknown Actor'}
+                                                </a>
+                                            </>
+                                        );
+                                    } else {
+                                        id = result?.title?.url?.split('/').pop();
+                                        content = (
+                                            <>
+                                                <a href={`/title/${id}`} className="text-decoration-none">
                                                     {result.title?.primaryTitle}
                                                 </a>
+                                            </>
+                                        );
+                                    }
+                                
+                                    return (
+                                        <div key={index} className="list-group-item">
+                                            <div className="row align-items-center">
+                                                {result?.title?.poster && (
+                                                    <div className="col-auto">
+                                                        <img
+                                                            src={result.title.poster}
+                                                            alt={result.title.primaryTitle || 'Poster'}
+                                                            style={{ width: 'auto', height: '75px' }}
+                                                        />
+                                                    </div>
+                                                )}
+                                                <div className="col">{content}</div>
                                             </div>
                                         </div>
-                                            <>
-                                            {searchType === 'titles' && (
-                                                <p>{result.title}</p>
-                                            )}
-                                              {searchType === 'celebs' && (
-                                                <p>{result.actorName}</p>
-                                            )}
-                                            </>
-                                    </div>
-                                ))
+                                    );
+                                })                                
                             ) : (
                                 <div className="text-center py-2">No results found.</div>
                             )}
