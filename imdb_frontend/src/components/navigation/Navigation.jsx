@@ -24,8 +24,11 @@ const Navigation = () => {
             
                 <Navbar.Toggle aria-controls="basic-navbar-nav" className="ms-auto" />
 
-                <Navbar.Collapse id="basic-navbar-nav"> 
-                    <Nav className={`me-auto ${style.nav}`}>
+                <Navbar.Collapse id="basic-navbar-nav" className={`me-auto ${style.nav}`}>
+                    <Nav>
+                        <Nav.Link onClick={handleToggle} className="ms-auto">
+                            <i className="bi bi-x-lg"></i>
+                        </Nav.Link>
                         <Nav.Link href="/signup">Sign up</Nav.Link>
                         <Nav.Link href="/login">Log in</Nav.Link>
                         <Nav.Link href="/movies">Movies</Nav.Link>

@@ -1,6 +1,12 @@
 .nav {
+    position: fixed; 
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 100vh;
+    z-index: 999;
+    padding: 3rem;
+    background-color: #343a40; 
     animation: fallFromTop 1s ease-out;
 }
 

@@ -1,7 +1,5 @@
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router';
 import Navigation from './components/navigation/Navigation';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
 import Footer from './components/footer/Footer';
 import Signup from './components/user/Signup';
 import Login from './components/user/Login';
@@ -10,6 +8,9 @@ import Title from './components/Title/Title';
 import React from 'react';
 import AllGenres from './components/genres/allGenres/AllGenres';
 import SingularGenre from './components/genres/singularGenre/SingularGenre';
+import AdvancedSearch from './components/advanced-search/AdvancedSearch';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             </div>
           }
         >
+          <Route path='advanced-search' element={<AdvancedSearch/>} />
           <Route path='signup' element={<Signup />} />
           <Route path='login' element={<Login />} />
           <Route path='profile' element={<Profile />} />
@@ -34,7 +36,6 @@ function App() {
             <Route path=':genreId' element={<SingularGenre />} />
           </Route>
         </Route>
-        <Route path='/register' element={<div>elem 2</div>} />
       </Routes>
     </BrowserRouter>
   );
