@@ -1,5 +1,7 @@
 // @ts-nocheck
 import React, { useEffect, useState } from 'react';
+
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Stack, Button } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
@@ -7,12 +9,13 @@ import Row from 'react-bootstrap/Row';
 import { useParams } from 'react-router';
 import Image from 'react-bootstrap/Image';
 import Badge from 'react-bootstrap/Badge';
+
 import { getTitleAndPersons } from '../../services/Title/title.service';
 import './Title.css';
 import PersonPreview from '../Person/PersonPreview.jsx';
-import 'bootstrap-icons/font/bootstrap-icons.css';
 import Episode from './Episode/Episode.jsx';
 import Loading from '../loading/Loading.jsx';
+import RateTitleModal from '../rating/RateTitleModal.jsx';
 
 var Star = require('../../assets/star.png');
 
@@ -25,6 +28,7 @@ const Title = () => {
   const [limitDirectors, setLimitDirectors] = useState(true);
   const [limitWriters, setLimitWriters] = useState(true);
   const [episodeFirstIndex, setEpisodeFirstIndex] = useState(0);
+  const [showModal, setShowModal] = useState(false);
 
   const [title, setTitle] = useState({});
 
@@ -86,6 +90,14 @@ const Title = () => {
   const navigateToAlternative = (url) => { 
     const tconst = url.split('/').pop() 
     window.location.href  = `/title/alternative/${tconst}`;
+  }
+
+  const rateTitle = () => {
+    setShowModal(true);
+  }
+
+  const handleClose = () => {
+    setShowModal(false);
   }
 
 
@@ -184,7 +196,7 @@ const Title = () => {
                             </Stack>
                           )}
         
-                          <Stack direction='vertical'>
+                          <Stack direction='vertical' className="title__your-rating" onClick={rateTitle}>
                             <span className='title__section-header'>Your rating</span>
                             <Stack direction='horizontal'>
                               <i className='bi bi-star title__rate-icon'> </i>
@@ -463,6 +475,8 @@ const Title = () => {
       ) : (
         <Loading />
       )}
+
+      <RateTitleModal show={showModal} handleClose={handleClose}></RateTitleModal>
     </>
   );
 };
