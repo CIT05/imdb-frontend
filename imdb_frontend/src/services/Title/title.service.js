@@ -20,10 +20,14 @@ const fetchPersonPhoto = async (personUrl) => {
     });
 };
 
+const fetchTitleAlternatives = async (tconst) => {
+  return fetch(`https://localhost:5002/api/titlealternative/title/${tconst}`)
+    .then((response) => response.json())
+    .then((data) => data);
+};
+
 const getTitleAlternatives = async (tconst) => {
-  const titleAlternatives = await fetchTitle(tconst).then(
-    (data) => data.titleAlternatives
-  );
+  const titleAlternatives = await fetchTitleAlternatives(tconst);
   return titleAlternatives;
 };
 

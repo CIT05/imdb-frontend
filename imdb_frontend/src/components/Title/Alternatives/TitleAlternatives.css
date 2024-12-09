@@ -5,11 +5,8 @@
   margin-inline: auto;
 }
 
-.title-alternatives__content {
-  width: 100%;
-  display: flex;
+.title-alternatives__row {
   gap: 1.5rem;
-  justify-content: space-between;
   padding: 1rem;
   border-bottom: 1px solid grey;
   margin: 0;

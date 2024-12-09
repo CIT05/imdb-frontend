@@ -1,6 +1,8 @@
 // @ts-nocheck
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
+
+import { Badge, Row, Col } from 'react-bootstrap';
 import { getTitleAlternatives } from '../../../services/Title/title.service';
 
 import './TitleAlternatives.css';
@@ -36,7 +38,10 @@ const TitleAlternatives = () => {
         <div className='title-alternatives__container'>
           <h2>Title Alternatives</h2>
 
-          <div className='title-alternatives__header' onClick={navigateToOriginalTitle}>
+          <div
+            className='title-alternatives__header'
+            onClick={navigateToOriginalTitle}
+          >
             <span className='title-alternatives__original-title'>
               Original title: {originalTitle[0].altTitle}{' '}
             </span>
@@ -47,17 +52,37 @@ const TitleAlternatives = () => {
           </div>
 
           <div className='title-alternatives__content'>
-            <span className="text-bold">Title</span>
-            <span className="text-bold">Region</span>
+            <Row className='title-alternatives__row'>
+              <Col>
+                <span className='text-bold'>Title</span>
+              </Col>
+              <Col>
+                <span className='text-bold'>Type</span>
+              </Col>
+              <Col lg={1} md={1}>
+                <span className='text-bold'>Region</span>
+              </Col>
+            </Row>
           </div>
           {otherTitles.map((alternative) => (
-            <div
-              className='title-alternatives__content'
-              key={alternative.akasId}
-            >
-              <span>{alternative.altTitle}</span>
-              <span>{alternative.region}</span>
-            </div>
+            <Row key={alternative.akasId} className='title-alternatives__row'>
+              <Col >
+                <span>{alternative.altTitle}</span>
+              </Col>
+              <Col >
+                {alternative.types &&
+                  alternative.types.map((type) => (
+                    <h5 key={type.url}>
+                      <Badge pill bg='secondary' text='white'>
+                        {type.typeName}
+                      </Badge>
+                    </h5>
+                  ))}
+              </Col>
+              <Col lg={1} md={1}>
+                <span>{alternative.region}</span>
+              </Col>
+            </Row>
           ))}
         </div>
       )}
