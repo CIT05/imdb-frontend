@@ -54,7 +54,7 @@ const Profile = () => {
 										<h2>Welcome IMDB Member</h2>
 									</Row>
 									<Row>
-										<h4>Username:{userInfo.username}</h4>
+										<h4>Username: {userInfo.username}</h4>
 									</Row>
 									<Row>
 										<p>

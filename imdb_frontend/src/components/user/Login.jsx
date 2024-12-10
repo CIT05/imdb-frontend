@@ -3,6 +3,7 @@ import { useState } from 'react';
 import styles from './style.module.css';
 import UserService from '../../services/UserService';
 import { useUserContext } from '../../contexts/UserContext';
+import { useNavigate } from 'react-router';
 
 const Login = () => {
 	const [formData, setFormData] = useState({ username: '', password: '' });
@@ -10,6 +11,7 @@ const Login = () => {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState('');
 	const { setLoggedInUser } = useUserContext();
+	const navigate = useNavigate();
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -49,6 +51,7 @@ const Login = () => {
 			await userService.logIn(userData);
 			console.log('User logged in successfully:', userData);
 			setLoggedInUser(userData.username);
+			navigate('/profile');
 		} catch (err) {
 			setError('An error occurred while logging in. Please try again.');
 			console.error(err);
