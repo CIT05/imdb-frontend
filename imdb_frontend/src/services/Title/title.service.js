@@ -141,4 +141,4 @@ const handleTitlePrinciples = async (principals) => {
 	);
 };
 
-export { getTitleAndPersons, fetchTitle };
+export { getTitleAndPersons, fetchTitle, fetchPersonPhoto };

@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 import UserService from '../../services/UserService';
 import { Image, Button, Row, Col } from 'react-bootstrap';
 import Carousel from './Carousel';
+import RatingCard from './RatingCard';
+import BookmarkedTitleCard from './BookmarkedTitleCard';
+import BookmarkedPers from './BookmarkedPers';
 
 const Profile = () => {
 	const { loggedInUser } = useUserContext();
-
 	const [userInfo, setUserInfo] = useState(null);
 
 	useEffect(() => {
@@ -89,7 +91,40 @@ const Profile = () => {
 
 							<Row>
 								<Carousel
-									ratingHistory={userInfo.ratingHistory}
+									items={userInfo.ratingHistory}
+									renderItem={(rating) => (
+										<RatingCard rating={rating} />
+									)}
+								/>
+							</Row>
+							<Row className="mt-5">
+								<Col>
+									<h2>Your bookmarked titles</h2>
+								</Col>
+							</Row>
+							<Row>
+								<Carousel
+									items={userInfo.titleBookmarkings}
+									renderItem={(bookmarkedTitle) => (
+										<BookmarkedTitleCard
+											bookmarkedTitle={bookmarkedTitle}
+										/>
+									)}
+								/>
+							</Row>
+							<Row className="mt-5">
+								<Col>
+									<h2>Your bookmarked persons</h2>
+								</Col>
+							</Row>
+							<Row>
+								<Carousel
+									items={userInfo.personalityBookmarkings}
+									renderItem={(bookmarkedPers) => (
+										<BookmarkedPers
+											bookmarkedPers={bookmarkedPers}
+										/>
+									)}
 								/>
 							</Row>
 						</Container>
