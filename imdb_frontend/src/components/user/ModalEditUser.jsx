@@ -1,12 +1,10 @@
-import { Form, Button, Stack, Container } from 'react-bootstrap';
-import styles from './style.module.css';
-import { useState, useEffect } from 'react';
-import UserService from '../../services/UserService';
+import React, { useState } from 'react';
+import { Modal, Button, Form } from 'react-bootstrap';
 import { useUserContext } from '../../contexts/UserContext';
-import { useNavigate } from 'react-router';
+import UserService from '../../services/UserService';
 
-const Signup = () => {
-	const navigate = useNavigate();
+const ModalEditUser = (props) => {
+	const { countries, loggedInUser } = useUserContext();
 	const [formData, setFormData] = useState({
 		username: '',
 		password: '',
@@ -16,7 +14,6 @@ const Signup = () => {
 	const [errors, setErrors] = useState({});
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState('');
-	const { countries, setCountries } = useUserContext();
 
 	function handleChange(e) {
 		const { name, value } = e.target;
@@ -64,37 +61,29 @@ const Signup = () => {
 			};
 
 			const userService = new UserService();
-			await userService.signUp(userData);
-			console.log('User signed up successfully:', userData);
-			navigate('/login');
+			await userService.editUser(userData, loggedInUser.userId);
+			console.log('User modified successfully:', userData);
 		} catch (err) {
-			setError('An error occurred while signing up. Please try again.');
+			setError('An error occurred while modifying. Please try again.');
 			console.error(err);
 		} finally {
 			setLoading(false);
 		}
 	}
 
-	useEffect(() => {
-		const fetchCountries = async () => {
-			try {
-				const userService = new UserService();
-				const countryData = await userService.fetchCountries();
-				setCountries(countryData);
-			} catch (err) {
-				console.error('Error fetching country data:', err);
-			}
-		};
-
-		fetchCountries();
-	}, [setCountries]);
-
 	return (
-		<Container
-			className={`d-flex w-50 justify-content-center align-items-center ${styles.container}`}
+		<Modal
+			{...props}
+			size="lg"
+			aria-labelledby="contained-modal-title-vcenter"
+			centered
 		>
-			<Stack className="d-flex justify-content-center w-50 align-items-center text-light">
-				<h1 className="align-self-start">Sign Up</h1>
+			<Modal.Header className="bg-dark text-light" closeButton>
+				<Modal.Title id="contained-modal-title-vcenter">
+					Edit your profile
+				</Modal.Title>
+			</Modal.Header>
+			<Modal.Body className="bg-dark text-light">
 				{error && <div className="alert alert-danger">{error}</div>}
 				<Form noValidate onSubmit={handleSubmit} className="w-100">
 					<Form.Group className="mb-3" controlId="formBasicUsername">
@@ -159,38 +148,30 @@ const Signup = () => {
 							<option value="">
 								Choose your preferred language
 							</option>
-							{countries && countries.length > 0 ? (
-								countries.map((country) => (
-									<option
-										key={country.code}
-										value={country.code}
-									>
-										{country.name}
-									</option>
-								))
-							) : (
-								<option disabled>Loading countries...</option>
-							)}
+							{countries.map((country) => (
+								<option key={country.code} value={country.code}>
+									{country.name}
+								</option>
+							))}
 						</Form.Select>
 						<Form.Control.Feedback type="invalid">
 							{errors.language}
 						</Form.Control.Feedback>
 					</Form.Group>
-
-					<Stack>
-						<Button
-							disabled={loading}
-							className="align-self-center w-25"
-							variant="outline-info"
-							type="submit"
-						>
-							{loading ? 'Signing Up...' : 'Sign Up'}
-						</Button>
-					</Stack>
 				</Form>
-			</Stack>
-		</Container>
+			</Modal.Body>
+			<Modal.Footer className="bg-dark text-light">
+				<Button
+					disabled={loading}
+					className="align-self-center w-25"
+					variant="outline-info"
+					type="submit"
+				>
+					{loading ? 'Editing profile...' : 'Edit profile'}
+				</Button>
+			</Modal.Footer>
+		</Modal>
 	);
 };
 
-export default Signup;
+export default ModalEditUser;

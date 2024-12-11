@@ -7,6 +7,7 @@ import Signup from './components/user/Signup';
 import Login from './components/user/Login';
 import Profile from './components/user/Profile';
 import Title from './components/Title/Title';
+import Person from './components/Person/Person';
 
 function App() {
 	return (
@@ -26,6 +27,7 @@ function App() {
 					<Route path="login" element={<Login />} />
 					<Route path="profile" element={<Profile />} />
 					<Route path="/title/:tconst" element={<Title />} />
+					<Route path="person/:nconst" element={<Person />} />
 				</Route>
 				<Route path="/register" element={<div>elem 2</div>} />
 			</Routes>

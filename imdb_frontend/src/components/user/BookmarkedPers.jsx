@@ -36,7 +36,7 @@ const BookmarkedPers = ({ bookmarkedPers }) => {
 		<Card
 			onClick={() => navigate(`/person/${bookmarkedPers.nConst}`)}
 			className={`bg-dark text-light ${styles.cardPersonality}`}
-			style={{}}
+			border="info"
 		>
 			<Card.Body className="d-flex flex-column align-items-center justify-content-center">
 				<div

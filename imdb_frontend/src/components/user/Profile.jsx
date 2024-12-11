@@ -3,14 +3,31 @@ import { useUserContext } from '../../contexts/UserContext';
 import { useEffect, useState } from 'react';
 import UserService from '../../services/UserService';
 import { Image, Button, Row, Col } from 'react-bootstrap';
-import Carousel from './Carousel';
+import Carousel from '../common/Carousel';
 import RatingCard from './RatingCard';
 import BookmarkedTitleCard from './BookmarkedTitleCard';
 import BookmarkedPers from './BookmarkedPers';
+import ModalEditUser from './ModalEditUser';
 
 const Profile = () => {
 	const { loggedInUser } = useUserContext();
 	const [userInfo, setUserInfo] = useState(null);
+	const [modalShow, setModalShow] = useState(false);
+	const { countries, setCountries } = useUserContext();
+
+	useEffect(() => {
+		const fetchCountries = async () => {
+			try {
+				const userService = new UserService();
+				const countryData = await userService.fetchCountries();
+				setCountries(countryData);
+			} catch (err) {
+				console.error('Error fetching country data:', err);
+			}
+		};
+
+		fetchCountries();
+	}, []);
 
 	useEffect(() => {
 		if (loggedInUser) {
@@ -18,7 +35,9 @@ const Profile = () => {
 				const userService = new UserService();
 
 				try {
-					const data = await userService.getUserInfo(loggedInUser);
+					const data = await userService.getUserInfo(
+						loggedInUser.username
+					);
 					setUserInfo(data);
 					console.log('User info fetched:', data);
 				} catch (error) {
@@ -68,6 +87,7 @@ const Profile = () => {
 										<Button
 											variant="outline-info"
 											className="w-25 mx-3 my-2"
+											onClick={() => setModalShow(true)}
 										>
 											Edit Profile
 										</Button>
@@ -131,6 +151,10 @@ const Profile = () => {
 					) : (
 						<h1 className="text-light">Please log in</h1>
 					)}
+					<ModalEditUser
+						show={modalShow}
+						onHide={() => setModalShow(false)}
+					/>
 				</Container>
 			) : (
 				<h1 className="text-light">Please log in</h1>

@@ -48,9 +48,13 @@ const Login = () => {
 			};
 
 			const userService = new UserService();
-			await userService.logIn(userData);
-			console.log('User logged in successfully:', userData);
-			setLoggedInUser(userData.username);
+			const loggedInUser = await userService.logIn(userData);
+			console.log('User logged in successfully:', loggedInUser);
+			setLoggedInUser({
+				username: loggedInUser.username,
+				userId: loggedInUser.userId,
+				token: loggedInUser.token,
+			});
 			navigate('/profile');
 		} catch (err) {
 			setError('An error occurred while logging in. Please try again.');
