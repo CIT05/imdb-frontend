@@ -9,6 +9,7 @@ const Person = () => {
 	const apiKey = process.env.REACT_APP_TMDB_API_KEY;
 	const [person, setPerson] = useState({});
 	const [photoUrl, setPhotoUrl] = useState(null);
+	const [rating, setRating] = useState(null);
 
 	useEffect(() => {
 		const personService = new PersonService();
@@ -20,13 +21,19 @@ const Person = () => {
 
 	useEffect(() => {
 		const photoUrl = `https://api.themoviedb.org/3/find/${nconst}?external_source=imdb_id&api_key=${apiKey}`;
+		const personService = new PersonService();
 
 		const getPhoto = async () => {
 			const fetchedPhotoUrl = await fetchPersonPhoto(photoUrl);
 			setPhotoUrl(fetchedPhotoUrl);
 		};
+		const getRating = async () => {
+			const rating = await personService.getRatingPerson(nconst);
+			setRating(rating);
+		};
 
 		getPhoto();
+		getRating();
 	}, [nconst, apiKey]);
 
 	return (
@@ -60,7 +67,14 @@ const Person = () => {
 					</Row>
 					<Row>
 						<h3 className="text-info">
-							{person.birthYear}- {person.deathYear}
+							{person.birthYear}
+							{person.deathYear ? -person.deathYear : ''}
+						</h3>
+					</Row>
+					<Row className="bg-dark border border-info rounded p-3 d-inline-block my-3">
+						<h3 className="text-light">
+							Rating: {rating}{' '}
+							<i className="bi bi-star-fill text-warning"></i>
 						</h3>
 					</Row>
 				</Col>
