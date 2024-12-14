@@ -1,5 +1,5 @@
 class SearchService {
-  constructor(baseURL = 'http://localhost:5001/api/search/') {
+  constructor(baseURL = `${process.env.REACT_APP_BASE_URL}/api/search/`) {
     this.baseURL = baseURL;
   }
 
@@ -54,12 +54,14 @@ class SearchService {
   async loginSearchTitle(userId = 3, title, token) {
     try {
       const response = await fetch(
-        `${this.baseURL}title/${encodeURIComponent(userId)}/${encodeURIComponent(title)}`,
+        `${this.baseURL}title/${encodeURIComponent(
+          userId
+        )}/${encodeURIComponent(title)}`,
         {
           headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
         }
       );
       if (!response.ok) {
@@ -76,12 +78,14 @@ class SearchService {
   async loginSearchName(userId = 3, name, token) {
     try {
       const response = await fetch(
-        `${this.baseURL}actor/${encodeURIComponent(userId)}/${encodeURIComponent(name)}`,
+        `${this.baseURL}actor/${encodeURIComponent(
+          userId
+        )}/${encodeURIComponent(name)}`,
         {
           headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
         }
       );
       if (!response.ok) {
@@ -99,9 +103,9 @@ class SearchService {
       const response = await fetch(`${this.baseURL}title`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(params)
+        body: JSON.stringify(params),
       });
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -119,9 +123,9 @@ class SearchService {
       const response = await fetch(`${this.baseURL}actor`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(params)
+        body: JSON.stringify(params),
       });
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -133,10 +137,7 @@ class SearchService {
       throw error;
     }
   }
-
 }
-
-
 
 const searchServiceInstance = new SearchService();
 
