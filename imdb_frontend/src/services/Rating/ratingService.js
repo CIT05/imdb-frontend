@@ -1,7 +1,7 @@
 const saveRating = async (userId, tconst, ratingValue) => {
   try {
     const response = await fetch(
-      `https://localhost:5002/api/rating/move/${userId}/${tconst}/${ratingValue}`,
+      `${process.env.REACT_APP_BASE_URL}/api/rating/move/${userId}/${tconst}/${ratingValue}`,
       {
         method: 'POST',
         headers: {

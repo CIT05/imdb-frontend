@@ -1,13 +1,13 @@
 const getAllGenres = async (pageNumber) => {
   return fetch(
-    `https://localhost:5002/api/genre?pageSize=5&pageNumber=${pageNumber}`
+    `${process.env.REACT_APP_BASE_URL}/api/genre?pageSize=5&pageNumber=${pageNumber}`
   )
     .then((response) => response.json())
     .then((data) => data);
 };
 
 const getGenre = async (genreId) => {
-  return fetch(`https://localhost:5002/api/genre/${genreId}`)
+  return fetch(`${process.env.REACT_APP_BASE_URL}/api/genre/${genreId}`)
     .then((response) => response.json())
     .then((data) => data);
 };

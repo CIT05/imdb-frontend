@@ -1,14 +1,22 @@
 // @ts-nocheck
+
 const fetchTitle = async (tconst) => {
-	return fetch(`https://localhost:5002/api/title/${tconst}`)
+	return fetch(`${process.env.REACT_APP_BASE_URL}/api/title/${tconst}`)
 		.then((response) => response.json())
 		.then((data) => data);
 };
 
 const fetchAllTitles = async () => {
-	return fetch('https://localhost:5002/api/title?pageNumber=1&pageSize=50')
+	console.log(
+		'test',
+		`${process.env.REACT_APP_BASE_URL}/api/title?pageNumber=1&pageSize=50`
+	);
+	return fetch(
+		`${process.env.REACT_APP_BASE_URL}/api/title?pageNumber=1&pageSize=50`
+	)
 		.then((response) => response.json())
 		.then((data) => {
+			console.log(data, 'hejj');
 			return data;
 		});
 };
@@ -29,7 +37,9 @@ const fetchPersonPhoto = async (personUrl) => {
 };
 
 const fetchTitleAlternatives = async (tconst) => {
-	return fetch(`https://localhost:5002/api/titlealternative/title/${tconst}`)
+	return fetch(
+		`${process.env.REACT_APP_BASE_URL}/api/titlealternative/title/${tconst}`
+	)
 		.then((response) => response.json())
 		.then((data) => data);
 };

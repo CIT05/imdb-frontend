@@ -1,5 +1,5 @@
 class SearchService {
-	constructor(baseURL = 'https://localhost:5002/api/search/') {
+	constructor(baseURL = `${process.env.REACT_APP_BASE_URL}/api/search/`) {
 		this.baseURL = baseURL;
 	}
 

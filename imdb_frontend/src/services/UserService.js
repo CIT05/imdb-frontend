@@ -1,5 +1,5 @@
 class UserService {
-	constructor(baseURL = 'https://localhost:5002/api/user') {
+	constructor(baseURL = `${process.env.REACT_APP_BASE_URL}/api/user`) {
 		this.baseURL = baseURL;
 	}
 
