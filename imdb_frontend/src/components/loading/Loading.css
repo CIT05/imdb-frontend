@@ -1,0 +1,15 @@
+.loading__container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+}
+
+.spinner {
+  position: relative;
+  top: 50%;
+  left: 50%;
+}

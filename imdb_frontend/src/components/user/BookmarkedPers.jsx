@@ -45,10 +45,10 @@ const BookmarkedPers = ({ bookmarkedPers, onDelete }) => {
 	}, []);
 
 	useEffect(() => {
-		const photoUrl = `https://api.themoviedb.org/3/find/${bookmarkedPers.nConst}?external_source=imdb_id&api_key=${apiKey}`;
-
 		const getPhoto = async () => {
-			const fetchedPhotoUrl = await fetchPersonPhoto(photoUrl);
+			const fetchedPhotoUrl = await fetchPersonPhoto(
+				bookmarkedPers.nConst
+			);
 			setPhotoUrl(fetchedPhotoUrl);
 		};
 

@@ -24,7 +24,7 @@ const Person = () => {
 		const personService = new PersonService();
 
 		const getPhoto = async () => {
-			const fetchedPhotoUrl = await fetchPersonPhoto(photoUrl);
+			const fetchedPhotoUrl = await fetchPersonPhoto(nconst);
 			setPhotoUrl(fetchedPhotoUrl);
 		};
 		const getRating = async () => {

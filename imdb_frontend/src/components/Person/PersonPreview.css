@@ -3,11 +3,18 @@
   align-items: center;
   padding: 10px;
   margin: 10px 0;
+  cursor: pointer;
 }
 
 .person-preview__photo {
   width: 7rem;
   height: 7rem;
+  object-fit: cover;
+}
+
+.person-preview__photo--small {
+  width: 3rem;
+  height: 3rem;
   object-fit: cover;
 }
 
@@ -17,4 +24,8 @@
 
 .person-preview__photo-blank {
   font-size: 7rem !important;
+}
+
+.person-preview__photo-blank--small {
+  font-size: 3rem !important;
 }

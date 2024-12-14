@@ -15,6 +15,10 @@
   font-weight: 300;
 }
 
+.title__your-rating {
+  cursor: pointer;
+}
+
 .title__episodes-number {
   font-size: 1.2rem;
   font-weight: 300;
@@ -23,14 +27,20 @@
 .title__episodes {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  width: 100%;
   gap: 5rem;
   margin-block: 1rem;
+  margin-inline: 1rem;
 
   @media screen and (max-width: 768px) {
     margin-block: 1rem;
     grid-template-columns: 1fr;
     gap: 1rem;
   }
+}
+
+.title__episode {
+  cursor: pointer;
 }
 
 .list {
@@ -51,6 +61,10 @@
   list-style-type: none;
 }
 
+.list__element {
+  cursor: pointer;
+}
+
 .star {
   width: 2.5rem;
   height: 2.5rem;
@@ -62,6 +76,10 @@
 
 .title__details {
   font-weight: 600;
+}
+
+.title__rating-container {
+  margin-bottom: 2rem;
 }
 
 .title__rating {
@@ -101,8 +119,16 @@
   grid-template-columns: repeat(6, 1fr);
 }
 
+.title__alternatives {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  cursor: pointer;
+}
+
 .title__badge-element {
   width: 100%;
+  cursor: pointer;
 }
 
 .title__plot-and-production {
@@ -111,10 +137,19 @@
 }
 
 .title__plot {
+  margin-top: auto;
   font-weight: 500;
 }
 
-.title__directors-and-writers {
+.title__limit-button {
+  font-size: 0.6rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.title__limit-button:hover {
+  text-decoration: underline;
 }
 
 .title__cast-button {
@@ -122,8 +157,24 @@
   justify-content: center;
 }
 
+.title__button-expand {
+  cursor: pointer;
+}
+
+.title__button-expand:hover {
+  text-decoration: underline;
+}
+
 .title__cast-button-icon {
   font-size: 1.5rem;
+}
+
+.title__section-cast {
+  border-right: 1px solid grey;
+}
+
+.title__known-for {
+  padding-inline: 5rem;
 }
 
 .title__top-cast {

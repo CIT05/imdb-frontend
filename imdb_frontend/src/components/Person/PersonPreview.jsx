@@ -3,18 +3,20 @@ import './PersonPreview.css';
 import Image from 'react-bootstrap/Image';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-const PersonPreview = ({ name, character, job, img }) => {
+const PersonPreview = ({ name, character, job, img, isSmall, onClick }) => {
+
+
   return (
-    <div className='person-preview'>
+    <div className='person-preview' onClick={onClick}>
       {img ? (
         <Image
           src={img}
           alt={name}
-          className='person-preview__photo'
+          className={isSmall ? 'person-preview__photo--small' : 'person-preview__photo'}
           roundedCircle
         />
       ) : (
-        <i className='bi bi-person-circle person-preview__photo-blank'></i>
+        <i className={isSmall ? 'bi bi-person-circle person-preview__photo-blank--small' : 'bi bi-person-circle person-preview__photo-blank'}></i>
       )}
       <div className='person-preview__info'>
         <h4 className='person-preview__name'>{name}</h4>
