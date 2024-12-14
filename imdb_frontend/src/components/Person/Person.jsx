@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Image } from 'react-bootstrap';
+import { Container, Row, Col, Image, Button } from 'react-bootstrap';
 import { useParams } from 'react-router';
 import PersonService from '../../services/PersonService';
 import { fetchPersonPhoto } from '../../services/Title/title.service';
@@ -76,6 +76,15 @@ const Person = () => {
 							Rating: {rating}{' '}
 							<i className="bi bi-star-fill text-warning"></i>
 						</h3>
+					</Row>
+					<Row>
+						<Button
+							variant="outline-info"
+							className="w-25 mx-3 my-2"
+							// onClick={() => setModalShow(true)}
+						>
+							Edit Profile
+						</Button>
 					</Row>
 				</Col>
 			</Row>

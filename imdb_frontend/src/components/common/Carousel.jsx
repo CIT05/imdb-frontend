@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
 const Carousel = ({ items, renderItem }) => {
@@ -7,20 +7,29 @@ const Carousel = ({ items, renderItem }) => {
 	const itemsPerPage = 3;
 	const totalItems = items?.length || 0;
 
-	const visibleItems = [
-		items[currentIndex % totalItems],
-		items[(currentIndex + 1) % totalItems],
-		items[(currentIndex + 2) % totalItems],
-	].filter(Boolean);
+	useEffect(() => {
+		if (currentIndex >= totalItems) {
+			setCurrentIndex(0);
+		}
+	}, [items, currentIndex, totalItems]);
+
+	const visibleItems =
+		totalItems >= itemsPerPage
+			? [
+					items[currentIndex % totalItems],
+					items[(currentIndex + 1) % totalItems],
+					items[(currentIndex + 2) % totalItems],
+			  ]
+			: items;
 
 	const handlePrev = () => {
 		setCurrentIndex(
-			(prevIndex) => (prevIndex - itemsPerPage + totalItems) % totalItems
+			(prevIndex) => (prevIndex - 1 + totalItems) % totalItems
 		);
 	};
 
 	const handleNext = () => {
-		setCurrentIndex((prevIndex) => (prevIndex + itemsPerPage) % totalItems);
+		setCurrentIndex((prevIndex) => (prevIndex + 1) % totalItems);
 	};
 
 	if (totalItems === 0) {
@@ -37,17 +46,25 @@ const Carousel = ({ items, renderItem }) => {
 
 	return (
 		<Container className="mt-4">
-			<Row className="d-flex justify-content-between align-items-center">
-				{totalItems > itemsPerPage && (
+			<Row
+				className={`d-flex ${
+					totalItems < itemsPerPage
+						? 'justify-content-start'
+						: 'justify-content-around'
+				} align-items-center`}
+				key={items.length}
+			>
+				{totalItems >= itemsPerPage && (
 					<Col xs="auto">
 						<Button variant="outline-light" onClick={handlePrev}>
 							<i className="bi bi-caret-left-fill"></i>
 						</Button>
 					</Col>
 				)}
+
 				{visibleItems.map((item, index) => (
 					<Col
-						key={index}
+						key={`item-${item.nConst}-${index}`}
 						xs={12}
 						md={4}
 						lg={3}
@@ -56,7 +73,8 @@ const Carousel = ({ items, renderItem }) => {
 						{renderItem(item)}
 					</Col>
 				))}
-				{totalItems > itemsPerPage && (
+
+				{totalItems >= itemsPerPage && (
 					<Col xs="auto">
 						<Button variant="outline-light" onClick={handleNext}>
 							<i className="bi bi-caret-right-fill"></i>

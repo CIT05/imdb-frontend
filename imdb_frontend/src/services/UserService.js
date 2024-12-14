@@ -96,30 +96,58 @@ class UserService {
 		}
 	}
 
-	async deleteUser(userData, loggedInUserId) {
+	async deleteBookmarkedPersonality(loggedInUserId, nconst, token) {
 		try {
-			const response = await fetch(`${this.baseURL}/${loggedInUserId}`, {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(userData),
-			});
+			const response = await fetch(
+				`https://localhost:5002/api/bookmarking/personality?userId=${loggedInUserId}&nconst=${nconst}`,
+				{
+					method: 'DELETE',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
 
 			if (!response.ok) {
-				throw new Error('Could not modify you user. Please try again.');
+				throw new Error('Could not delete bookmarking.');
 			}
 
-			const data = await response.json();
-			return data;
+			// const data = await response.json();
+			// return data;
 		} catch (error) {
 			console.error(
-				'There was a problem with modifying your user.',
+				'There was a problem with deleting bookmarking.',
 				error
 			);
 			throw error;
 		}
 	}
+
+	// async deleteUser(userData, loggedInUserId) {
+	// 	try {
+	// 		const response = await fetch(`${this.baseURL}/${loggedInUserId}`, {
+	// 			method: 'DELETE',
+	// 			headers: {
+	// 				'Content-Type': 'application/json',
+	// 			},
+	// 			body: JSON.stringify(userData),
+	// 		});
+
+	// 		if (!response.ok) {
+	// 			throw new Error('Could not modify you user. Please try again.');
+	// 		}
+
+	// 		const data = await response.json();
+	// 		return data;
+	// 	} catch (error) {
+	// 		console.error(
+	// 			'There was a problem with modifying your user.',
+	// 			error
+	// 		);
+	// 		throw error;
+	// 	}
+	// }
 
 	async fetchCountries() {
 		try {

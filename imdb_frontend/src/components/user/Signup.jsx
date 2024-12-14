@@ -149,16 +149,14 @@ const Signup = () => {
 						className="mb-5 w-50"
 						controlId="preferredLanguage"
 					>
-						<Form.Label>Preferred language</Form.Label>
+						<Form.Label>Choose a country</Form.Label>
 						<Form.Select
 							name="language"
 							value={formData.language}
 							onChange={handleChange}
 							isInvalid={!!errors.language}
 						>
-							<option value="">
-								Choose your preferred language
-							</option>
+							<option value="">Choose a country</option>
 							{countries && countries.length > 0 ? (
 								countries.map((country) => (
 									<option

@@ -49,6 +49,16 @@ const Profile = () => {
 		}
 	}, [loggedInUser]);
 
+	const handleItemDelete = (deletedId) => {
+		setUserInfo((prevUserInfo) => ({
+			...prevUserInfo,
+			personalityBookmarkings:
+				prevUserInfo.personalityBookmarkings.filter(
+					(item) => item.nConst !== deletedId
+				),
+		}));
+	};
+
 	return (
 		<Container className="d-flex w-75 my-3 justify-content-center align-items-center text-light">
 			{userInfo ? (
@@ -143,6 +153,7 @@ const Profile = () => {
 									renderItem={(bookmarkedPers) => (
 										<BookmarkedPers
 											bookmarkedPers={bookmarkedPers}
+											onDelete={handleItemDelete}
 										/>
 									)}
 								/>

@@ -52,7 +52,7 @@ const Login = () => {
 			console.log('User logged in successfully:', loggedInUser);
 			setLoggedInUser({
 				username: loggedInUser.username,
-				userId: loggedInUser.userId,
+				userId: loggedInUser.id,
 				token: loggedInUser.token,
 			});
 			navigate('/profile');
