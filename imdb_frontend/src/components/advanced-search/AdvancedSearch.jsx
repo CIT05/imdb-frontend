@@ -123,7 +123,7 @@ const AdvancedSearch = () => {
                         <Accordion.Header>Movie Plot</Accordion.Header>
                         <Accordion.Body>
                         <label htmlFor="moviePlot"></label>
-                        <input type="textarea" name="moviePlot" placeholder="Enter movie name" />
+                        <input type="textarea" name="moviePlot" placeholder="Enter movie plot" />
                         </Accordion.Body>
                     </Accordion.Item>
                 </Accordion>
@@ -133,7 +133,7 @@ const AdvancedSearch = () => {
                         <Accordion.Header>Title Characters</Accordion.Header>
                         <Accordion.Body>
                         <label htmlFor="titleCharacters"></label>
-                        <input type="text" name="titleCharacters" placeholder="Enter movie name" />
+                        <input type="text" name="titleCharacters" placeholder="Enter character name" />
                         </Accordion.Body>
                     </Accordion.Item>
                 </Accordion>
@@ -181,7 +181,7 @@ const AdvancedSearch = () => {
                     <Accordion.Header>Movie Plot</Accordion.Header>
                     <Accordion.Body>
                     <label htmlFor="moviePlotCelebs"></label>
-                    <input type="text" name="moviePlotCelebs" placeholder="Enter movie name" />
+                    <input type="text" name="moviePlotCelebs" placeholder="Enter movie plot" />
                     </Accordion.Body>
                 </Accordion.Item>
             </Accordion>
@@ -191,7 +191,7 @@ const AdvancedSearch = () => {
                     <Accordion.Header>Title Characters</Accordion.Header>
                     <Accordion.Body>
                     <label htmlFor="titleCharactersCelebs"></label>
-                    <input type="text" name="titleCharactersCelebs" placeholder="Enter movie name" />
+                    <input type="text" name="titleCharactersCelebs" placeholder="Enter character name" />
                     </Accordion.Body>
                 </Accordion.Item>
             </Accordion>
@@ -249,7 +249,7 @@ const AdvancedSearch = () => {
                     {activeTab === 'titles' && (
                         <>
                             <Card.Title>{result.title}</Card.Title>
-                            <Card.Link href={`/title/${id}`}>See title</Card.Link>
+                            <Card.Link href={`/title/${id}`}>See title  <i className="bi bi-arrow-right"></i></Card.Link>
                         </>
                     )}
                     {activeTab === 'celebs' && (

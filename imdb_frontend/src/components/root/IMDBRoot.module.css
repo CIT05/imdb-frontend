@@ -52,7 +52,7 @@ img {
     50% { border-color: orange }
   }
 
-  h2 {
+  .h2 {
     opacity: 0;
     animation: fadeIn 2s forwards 2s;
   }
@@ -63,7 +63,7 @@ img {
         }
     }
     
-h2 {
+.h2 {
   margin-block-end: 3rem;
   margin-inline-start: 7rem;
 }
