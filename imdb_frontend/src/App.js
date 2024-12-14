@@ -9,6 +9,7 @@ import Title from './components/Title/Title';
 import React from 'react';
 import AllGenres from './components/genres/allGenres/AllGenres';
 import SingularGenre from './components/genres/singularGenre/SingularGenre';
+import TitleAlternatives from './components/Title/Alternatives/TitleAlternatives';
 import AdvancedSearch from './components/advanced-search/AdvancedSearch';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -33,6 +34,10 @@ function App() {
           <Route path='login' element={<Login />} />
           <Route path='profile' element={<Profile />} />
           <Route path='/title/:tconst' element={<Title />} />
+          <Route
+            path='title/alternative/:tconst'
+            element={<TitleAlternatives />}
+          />
           <Route path='/genres'>
             <Route index element={<AllGenres />} />
             <Route path=':genreId' element={<SingularGenre />} />

@@ -29,6 +29,17 @@ const fetchPersonPhoto = async (personUrl) => {
     });
 };
 
+const fetchTitleAlternatives = async (tconst) => {
+  return fetch(`https://localhost:5002/api/titlealternative/title/${tconst}`)
+    .then((response) => response.json())
+    .then((data) => data);
+};
+
+const getTitleAlternatives = async (tconst) => {
+  const titleAlternatives = await fetchTitleAlternatives(tconst);
+  return titleAlternatives;
+};
+
 const getTitleAndPersons = async (tconst) => {
   const title = await fetchTitle(tconst);
 
@@ -142,4 +153,4 @@ const handleTitlePrinciples = async (principals) => {
   );
 };
 
-export { fetchAllTitles, getTitleAndPersons };
+export { getTitleAndPersons, getTitleAlternatives, fetchAllTitles };
