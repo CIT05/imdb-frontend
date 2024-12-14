@@ -1,0 +1,42 @@
+.all-genres__container {
+  max-width: 1280px;
+  padding-block: 1rem;
+  color: white;
+  margin-inline: auto;
+  height: 100%;
+}
+
+.all-genres__genre-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  border-bottom: 1px solid white;
+  padding: 1rem;
+  min-height: 100%;
+  margin-block-end: 1rem;
+}
+
+.all-genres__genre-text {
+  font-size: 1.5rem;
+}
+
+.all-genres__icon {
+  font-size: 1.5rem;
+  margin-inline-start: auto;
+}
+
+.all-genres__genre-row {
+  :hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+  }
+}
+.row::last-child {
+  margin-top: auto;
+}
+
+.all-genres__paginator {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
