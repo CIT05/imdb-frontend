@@ -1,4 +1,5 @@
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router';
+import IMDBRoot from './components/root/IMDBRoot';
 import Navigation from './components/navigation/Navigation';
 import Footer from './components/footer/Footer';
 import Signup from './components/user/Signup';
@@ -26,7 +27,8 @@ function App() {
             </div>
           }
         >
-          <Route path='advanced-search' element={<AdvancedSearch/>} />
+          <Route index element={<IMDBRoot />} />
+          <Route path='advanced-search' element={<AdvancedSearch />} />
           <Route path='signup' element={<Signup />} />
           <Route path='login' element={<Login />} />
           <Route path='profile' element={<Profile />} />

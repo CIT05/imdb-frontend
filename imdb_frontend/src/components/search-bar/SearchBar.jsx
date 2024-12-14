@@ -27,7 +27,7 @@ const SearchBar = () => {
 
             if (loggedInUser) {
                 if (searchType === 'titles') {
-                    data = await searchServiceInstance.loginSearchTitle(3,query, loggedInUser);
+                    data = await searchServiceInstance.loginSearchTitle(3, query, loggedInUser);
                 } else if (searchType === 'celebs') {
                     data = await searchServiceInstance.loginSearchName(3, query, loggedInUser);
                 } else {
@@ -98,7 +98,7 @@ const SearchBar = () => {
                                 </Dropdown.Item>
         
                                 <Dropdown.Item onClick={() => window.location.href = '/advanced-search'}>
-                                Advanced Search <i class="bi bi-arrow-right"></i>
+                                Advanced Search <i className="bi bi-arrow-right"></i>
                                 </Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
@@ -126,6 +126,7 @@ const SearchBar = () => {
                                 overflow: 'auto',
                                 position: 'absolute',
                                 width: '28rem',
+                                zIndex:'99'
                             }}
                         >
                             {loading ? (
@@ -137,14 +138,15 @@ const SearchBar = () => {
                             ) : results.length > 0 ? (
                                 results.map((result, index) => {
                                     let id = '';
+                                    let titleId = '';
                                     let titleCelebsId = '';
                                     let content = null;
                                 
                                     if (searchType === 'titles') {
-                                        id = result?.title?.url?.split('/').pop() || '';
+                                        titleId = result?.url?.split('/').pop();
                                         content = (
                                             <>
-                                                <a href={`/title/${id}`} className="text-decoration-none">
+                                                <a href={`/title/${titleId}`} className="text-decoration-none">
                                                     {result?.title}
                                                 </a>
                                             </>
@@ -154,7 +156,7 @@ const SearchBar = () => {
                                         content = (
                                             <>
                                                 <a href={`/person/${titleCelebsId}`} className="text-decoration-none">
-                                                    {result?.actorName || 'Unknown Actor'}
+                                                    {result?.actorName}
                                                 </a>
                                             </>
                                         );

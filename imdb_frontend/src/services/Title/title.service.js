@@ -1,8 +1,17 @@
 // @ts-nocheck
 const fetchTitle = async (tconst) => {
-  return fetch(`https://localhost:5002/api/title/${tconst}`)
+  return fetch(`http://localhost:5001/api/title/${tconst}`)
     .then((response) => response.json())
     .then((data) => data);
+};
+
+const fetchAllTitles = async () => {
+  return fetch('http://localhost:5001/api/title?pageNumber=1&pageSize=50')
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data, 'hejj');
+      return data;
+    });
 };
 
 const fetchPersonPhoto = async (personUrl) => {
@@ -133,4 +142,4 @@ const handleTitlePrinciples = async (principals) => {
   );
 };
 
-export { getTitleAndPersons };
+export { fetchAllTitles, getTitleAndPersons };
