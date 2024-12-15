@@ -19,7 +19,7 @@ export const UserProvider = ({ children }) => {
 		}
 	});
 
-	const [countries, setCountries] = useState([]);
+	const [languages, setLanguages] = useState([]);
 
 	useEffect(() => {
 		if (loggedInUser) {
@@ -38,7 +38,7 @@ export const UserProvider = ({ children }) => {
 
 	return (
 		<UserContext.Provider
-			value={{ loggedInUser, setLoggedInUser, countries, setCountries }}
+			value={{ loggedInUser, setLoggedInUser, languages, setLanguages }}
 		>
 			{children}
 		</UserContext.Provider>

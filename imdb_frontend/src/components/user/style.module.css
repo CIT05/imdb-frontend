@@ -8,7 +8,7 @@
 
 .card {
 	width: 18rem;
-	height: 8rem;
+	min-height: 8rem;
 	cursor: pointer;
 }
 

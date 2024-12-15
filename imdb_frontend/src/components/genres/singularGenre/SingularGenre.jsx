@@ -22,7 +22,7 @@ const SingularGenre = () => {
 	const { genreId } = useParams();
 	const [genre, setGenre] = useState(null);
 	const [filteredTitlesGenre, setFilteredTitlesGenre] = useState(null);
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoaded, setIsLoaded] = useState(false);
 
 	const [show, setShow] = useState(false);
 	const [sortType, setSortType] = useState('');
@@ -33,25 +33,27 @@ const SingularGenre = () => {
 	const [higherThan, setHigherThan] = useState(null);
 	const [lowerThan, setLowerThan] = useState(null);
 
-	const numberOfPages = Math.ceil(
+	const numberOfPages = filteredTitlesGenre?.titles?.length > 0 ? Math.ceil(
 		filteredTitlesGenre?.titles.length / maxTitlesPerPage
-	);
+	) : 0;
 
 	useEffect(() => {
+		setIsLoaded(false);
 		genreServiceInstance.getGenre(genreId).then((data) => {
 			console.log(data);
 			setGenre(data);
 			setFilteredTitlesGenre(data);
+			setIsLoaded(true);
 		});
 	}, [genreId]);
 
 	const startSlice = maxTitlesPerPage * pageNumber;
 	const endSlice = maxTitlesPerPage * pageNumber + maxTitlesPerPage;
 
-	const slicedGenres = filteredTitlesGenre?.titles.slice(
+	const slicedGenres = filteredTitlesGenre?.titles ? filteredTitlesGenre?.titles.slice(
 		startSlice,
 		endSlice
-	);
+	): [];
 
 	const handlePageChange = (newPageNumber) => {
 		setPageNumber(newPageNumber);
@@ -161,9 +163,12 @@ const SingularGenre = () => {
 
 	return (
 		<>
-			{!isLoading && genre && filteredTitlesGenre ? (
+			{isLoaded && genre? (
 				<div className="singular-genres__container">
+					
 					<Container>
+						{ genre.status !== 400 && filteredTitlesGenre.titles ? (
+							<>
 						<Row>
 							<div className="singular-genres__header">
 								<i
@@ -251,6 +256,21 @@ const SingularGenre = () => {
 								</div>
 							)}
 						</Row>
+						</>
+					) : (
+						<>
+						<div className="singular-genres__header">
+						<i
+							className="bi bi-chevron-left singular-genres__icon"
+							onClick={navigateToAllGenres}
+						>
+							Back To All Genres
+						</i>
+					
+						</div>
+						<div>No titles found</div>
+						</>
+					)}
 					</Container>
 
 					<Offcanvas show={show} onHide={handleClose}>

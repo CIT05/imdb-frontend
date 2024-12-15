@@ -2,25 +2,20 @@ class RatingService {
   constructor(baseURL = `${process.env.REACT_APP_BASE_URL}/api/rating`) {
     this.baseURL = baseURL;
   }
-
-  saveRating = async (userId, tconst, ratingValue) => {
+  saveRating = async (userId, tconst, ratingValue, token) => {
     try {
       const response = await fetch(
-        `${this.baseURL}/move/${userId}/${tconst}/${ratingValue}`,
+        `${process.env.REACT_APP_BASE_URL}/api/rating/movie/${userId}/${tconst}/${ratingValue}`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
 
-      if (!response.ok) {
-        return response.status;
-      }
-
-      return response.ok;
+      return response.status;
     } catch (error) {
       console.error('There was a problem saving the rating.', error);
       throw error;
