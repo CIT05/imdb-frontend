@@ -13,20 +13,21 @@ const Profile = () => {
 	const { loggedInUser } = useUserContext();
 	const [userInfo, setUserInfo] = useState(null);
 	const [modalShow, setModalShow] = useState(false);
-	const { countries, setCountries } = useUserContext();
+	const { languages, setLanguages } = useUserContext();
+	const randomSeed = Math.random().toString(36).substring(7);
 
 	useEffect(() => {
-		const fetchCountries = async () => {
+		const fetchLanguages = async () => {
 			try {
 				const userService = new UserService();
-				const countryData = await userService.fetchCountries();
-				setCountries(countryData);
+				const languageData = await userService.fetchLanguages();
+				setLanguages(languageData); // Correctly updating the state // Optionally stop the loading state
 			} catch (err) {
-				console.error('Error fetching country data:', err);
+				console.error('Error fetching language data:', err);
 			}
 		};
 
-		fetchCountries();
+		fetchLanguages();
 	}, []);
 
 	useEffect(() => {
@@ -47,7 +48,7 @@ const Profile = () => {
 
 			fetchUserInfo();
 		}
-	}, [loggedInUser]);
+	}, [loggedInUser, userInfo?.language]);
 
 	const handleItemDelete = (deletedId) => {
 		setUserInfo((prevUserInfo) => ({
@@ -59,6 +60,10 @@ const Profile = () => {
 		}));
 	};
 
+	useEffect(() => {
+		console.log('user info', userInfo);
+	}, [userInfo]);
+
 	return (
 		<Container className="d-flex w-75 my-3 justify-content-center align-items-center text-light">
 			{userInfo ? (
@@ -67,15 +72,15 @@ const Profile = () => {
 						<Container>
 							<Row className="mb-4">
 								<Col>
-									<h1>Profile</h1>
+									<h1 className="text-start">Profile</h1>
 								</Col>
 							</Row>
 
 							<Row className="justify-content-between">
 								<Col md={4}>
 									<Image
-										className="w-100"
-										src="https://picsum.photos/171/180"
+										className="w-100 h-100"
+										src={`https://robohash.org/${randomSeed}.png`}
 										rounded
 									/>
 								</Col>
@@ -100,14 +105,6 @@ const Profile = () => {
 											onClick={() => setModalShow(true)}
 										>
 											Edit Profile
-										</Button>
-									</Row>
-									<Row>
-										<Button
-											variant="outline-danger"
-											className="w-25 mx-3 my-2"
-										>
-											Delete Account
 										</Button>
 									</Row>
 								</Col>
@@ -164,6 +161,7 @@ const Profile = () => {
 					)}
 					<ModalEditUser
 						show={modalShow}
+						setUserInfo={setUserInfo}
 						onHide={() => setModalShow(false)}
 					/>
 				</Container>

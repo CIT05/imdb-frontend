@@ -30,7 +30,6 @@ class UserService {
 	async logIn(userData) {
 		try {
 			const response = await fetch(`${this.baseURL}/login`, {
-				// Append /login to the base URL
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -71,12 +70,13 @@ class UserService {
 		}
 	}
 
-	async editUser(userData, loggedInUserId) {
+	async editUser(userData, loggedInUserId, token) {
 		try {
 			const response = await fetch(`${this.baseURL}/${loggedInUserId}`, {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
 				},
 				body: JSON.stringify(userData),
 			});
@@ -112,9 +112,6 @@ class UserService {
 			if (!response.ok) {
 				throw new Error('Could not delete bookmarking.');
 			}
-
-			// const data = await response.json();
-			// return data;
 		} catch (error) {
 			console.error(
 				'There was a problem with deleting bookmarking.',
@@ -124,22 +121,25 @@ class UserService {
 		}
 	}
 
-	async fetchCountries() {
+	async fetchLanguages() {
 		try {
-			const response = await fetch('https://restcountries.com/v3.1/all');
+			const response = await fetch(
+				'https://libretranslate.com/languages'
+			);
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
 			}
 			const data = await response.json();
-			const countryData = data
-				.map((country) => ({
-					name: country.name.common,
-					code: country.cca2.toLowerCase(),
-				}))
-				.sort((a, b) => a.name.localeCompare(b.name));
-			return countryData;
+
+			// Mapping the response to the desired format
+			const languageData = data.map((language) => ({
+				name: language.name,
+				code: language.code,
+			}));
+
+			return languageData;
 		} catch (err) {
-			console.error('Error fetching country data:', err);
+			console.error('Error fetching language data:', err);
 			throw err;
 		}
 	}

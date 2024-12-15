@@ -20,7 +20,6 @@ const Person = () => {
 	}, [nconst]);
 
 	useEffect(() => {
-		const photoUrl = `https://api.themoviedb.org/3/find/${nconst}?external_source=imdb_id&api_key=${apiKey}`;
 		const personService = new PersonService();
 
 		const getPhoto = async () => {
@@ -81,10 +80,7 @@ const Person = () => {
 						<Button
 							variant="outline-info"
 							className="w-25 mx-3 my-2"
-							// onClick={() => setModalShow(true)}
-						>
-							Edit Profile
-						</Button>
+						></Button>
 					</Row>
 				</Col>
 			</Row>
