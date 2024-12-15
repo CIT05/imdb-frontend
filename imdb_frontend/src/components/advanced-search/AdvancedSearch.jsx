@@ -77,7 +77,7 @@ const AdvancedSearch = () => {
     return (
         <>
         <div className={style.advancedContainer}>
-            <h1>Advanced Search</h1>
+            <h1 className={[style.h1]}>Advanced Search</h1>
             <p>
                 Discover IMDb's robust title search. Mix and match info to refine your searches. Looking for 1970s Canadian horror 
                 films rated above 6 by at least 100 users? Find them here. All fields below are optional, but at least one is needed 
@@ -223,7 +223,7 @@ const AdvancedSearch = () => {
             {results.length > 0  && !loading && (
                 <>
                 <div className={style.filterContainer}>
-            <h4>Total results: {results.length}</h4>
+            <h4 className={style.h4}>Total results: {results.length}</h4>
             <Dropdown >
                             <Dropdown.Toggle variant="info" id="dropdown-basic">
                                 Sort by

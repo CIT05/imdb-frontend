@@ -1,6 +1,27 @@
 class PersonService {
-	constructor(baseURL = 'https://localhost:5002/api/person') {
+	constructor(baseURL = `${process.env.REACT_APP_BASE_URL}/api/person`) {
 		this.baseURL = baseURL;
+	}
+
+	async getAllPersons() {	
+		try {
+			const response = await fetch(`${this.baseURL}?pageNumber=1&pageSize=50`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
+
+			if (!response.ok) {
+				throw new Error('Failed to fetch persons.');
+			}
+
+			const data = await response.json();
+			return data;
+		} catch (error) {
+			console.error('Error fetching persons:', error);
+			throw error;
+		}
 	}
 
 	async getPerson(nconst) {
@@ -26,7 +47,7 @@ class PersonService {
 
 	async getRatingPerson(nconst) {
 		const response = await fetch(
-			`https://localhost:5002/api/rating/person/${nconst}`,
+			`${process.env.REACT_APP_BASE_URL}/api/rating/person/${nconst}`,
 			{
 				method: 'GET',
 				headers: {

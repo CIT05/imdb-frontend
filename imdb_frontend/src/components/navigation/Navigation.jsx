@@ -3,6 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import SearchBar from '../search-bar/SearchBar';
+import { useUserContext } from '../../contexts/UserContext';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import style from './Navigation.module.css';
 
@@ -12,6 +13,7 @@ const Navigation = () => {
 	const handleToggle = () => {
 		setIsExpanded(!isExpanded);
 	};
+   const { loggedInUser } = useUserContext();
 
 	return (
 		<Navbar
@@ -21,7 +23,7 @@ const Navigation = () => {
 			expanded={isExpanded}
 			onToggle={handleToggle}
 		>
-			<Container fluid>
+			<Container fluid style={{ flexWrap: 'nowrap', gap: '1rem' }}>
 				<Navbar.Brand href="/" className={`me-auto ${style.profile}`}>
 					IMDb
 				</Navbar.Brand>
@@ -41,9 +43,11 @@ const Navigation = () => {
 						<Nav.Link onClick={handleToggle} className="ms-auto">
 							<i className="bi bi-x-lg"></i>
 						</Nav.Link>
+						<Nav.Link href="/">Home</Nav.Link>
 						<Nav.Link href="/signup">Sign up</Nav.Link>
-						<Nav.Link href="/login">Log in</Nav.Link>
-						<Nav.Link href="/profile">Profile</Nav.Link>
+						 {/* !ADELINA to lmk what we actually do when we log out  */}
+						{ !loggedInUser ? <Nav.Link href="/login">Log in</Nav.Link> : <Nav.Link href="/logout">Log out</Nav.Link> }  
+						{ loggedInUser ? <Nav.Link href="/profile">Profile</Nav.Link> : null }
 					</Nav>
 				</Navbar.Collapse>
 

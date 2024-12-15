@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 const fetchTitle = async (tconst) => {
 	return fetch(`${process.env.REACT_APP_BASE_URL}/api/title/${tconst}`)
 		.then((response) => response.json())
@@ -7,16 +5,9 @@ const fetchTitle = async (tconst) => {
 };
 
 const fetchAllTitles = async () => {
-	console.log(
-		'test',
-		`${process.env.REACT_APP_BASE_URL}/api/title?pageNumber=1&pageSize=50`
-	);
-	return fetch(
-		`${process.env.REACT_APP_BASE_URL}/api/title?pageNumber=1&pageSize=50`
-	)
+	return fetch(`${process.env.REACT_APP_BASE_URL}/api/title?pageNumber=1&pageSize=50`)
 		.then((response) => response.json())
 		.then((data) => {
-			console.log(data, 'hejj');
 			return data;
 		});
 };

@@ -17,6 +17,8 @@ import Episode from './Episode/Episode.jsx';
 import Loading from '../loading/Loading.jsx';
 import RateTitleModal from '../rating/RateTitleModal.jsx';
 
+import { useUserContext } from '../../contexts/UserContext';
+
 var Star = require('../../assets/star.png');
 
 const Title = () => {
@@ -31,6 +33,8 @@ const Title = () => {
   const [showModal, setShowModal] = useState(false);
 
   const [title, setTitle] = useState({});
+
+    const { loggedInUser } = useUserContext();
 
   useEffect(() => {
     getTitleAndPersons(tconst).then((data) => {
@@ -93,7 +97,8 @@ const Title = () => {
   }
 
   const rateTitle = () => {
-    setShowModal(true);
+    if (loggedInUser) setShowModal(true);
+    else window.location.href = '/login';
   }
 
   const handleClose = () => {

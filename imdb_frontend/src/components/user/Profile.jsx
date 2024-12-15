@@ -1,6 +1,7 @@
 import { Container } from 'react-bootstrap';
 import { useUserContext } from '../../contexts/UserContext';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 import UserService from '../../services/UserService';
 import { Image, Button, Row, Col } from 'react-bootstrap';
 import Carousel from '../common/Carousel';
@@ -14,6 +15,7 @@ const Profile = () => {
 	const [userInfo, setUserInfo] = useState(null);
 	const [modalShow, setModalShow] = useState(false);
 	const { countries, setCountries } = useUserContext();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const fetchCountries = async () => {
@@ -27,7 +29,7 @@ const Profile = () => {
 		};
 
 		fetchCountries();
-	}, []);
+	}, [setCountries]);
 
 	useEffect(() => {
 		if (loggedInUser) {
@@ -58,11 +60,16 @@ const Profile = () => {
 				),
 		}));
 	};
-
+	useEffect(() => {
+		if (!loggedInUser) {
+			navigate('/login');
+			return;
+		}
+	}, [loggedInUser, navigate]);
 	return (
 		<Container className="d-flex w-75 my-3 justify-content-center align-items-center text-light">
 			{userInfo ? (
-				<Container className=" my-3 justify-content-between text-light">
+				<Container className="my-3 justify-content-between text-light">
 					{userInfo ? (
 						<Container>
 							<Row className="mb-4">
@@ -71,7 +78,7 @@ const Profile = () => {
 								</Col>
 							</Row>
 
-							<Row className="justify-content-between">
+							<Row className="justify-content-between align-items-center">
 								<Col md={4}>
 									<Image
 										className="w-100"

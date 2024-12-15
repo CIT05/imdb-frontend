@@ -2,13 +2,14 @@
     display: flex;
     padding: 3rem;
     flex-direction: column; 
+    height: 80vh;
 }
 
-h1 {
+.h1 {
     text-align: center;
     margin-block-end: 1rem;
 }
-h4{
+.h4{
     padding-inline: 3rem;
 }
 
@@ -61,12 +62,12 @@ h4{
 
 .seeMoreButton {
     padding: 0.5rem 1rem;
+    margin-bottom: 2rem;
 }
-
 
 @media (max-width: 40rem) {
   .accordions {
     flex-direction: inline;
-    /* gap: 1rem; */
+
   }
 }
