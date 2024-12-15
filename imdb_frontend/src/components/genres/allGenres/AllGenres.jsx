@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import './AllGenres.css';
 import { Container, Row } from 'react-bootstrap';
 import Loading from '../../loading/Loading';
-import { getAllGenres } from '../../../services/Genres/GenresService';
+import genreServiceInstance from '../../../services/Genres/GenresService';
 import Paginator from '../../Paginator/Paginator';
 
 const AllGenres = () => {
@@ -13,7 +13,7 @@ const AllGenres = () => {
   const [pageNumber, setPageNumber] = React.useState(0);
 
   useEffect(() => {
-    getAllGenres(pageNumber).then((data) => {
+    genreServiceInstance.getAllGenres(pageNumber).then((data) => {
       console.log(data);
       setGenres(data);
     });

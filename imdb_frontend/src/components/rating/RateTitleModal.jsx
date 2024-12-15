@@ -1,8 +1,7 @@
 import React from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-import { saveRating } from '../../services/Rating/ratingService';
-
+import ratingServiceInstance from '../../services/Rating/ratingService';
 import './RateTitleModal.css';
 
 const RateTitleModal = ({ show, handleClose, tconst, userId, token }) => {
@@ -13,21 +12,24 @@ const RateTitleModal = ({ show, handleClose, tconst, userId, token }) => {
 		setRating(e.target.value);
 	};
 
-	const handleSave = async () => {
-		const response = await saveRating(userId, tconst, rating, token);
-		console.log(response);
-		if (response === 200 || response === 204) {
-			handleClose();
-		} else {
-			displayError();
-		}
-	};
-
 	const displayError = () => {
 		setError(true);
 		setTimeout(() => {
 			setError(false);
 		}, 3000);
+	};
+	const handleSave = async () => {
+		const response = await ratingServiceInstance.saveRating(
+			userId,
+			tconst,
+			rating,
+			token
+		);
+		if (response.ok) {
+			handleClose();
+		} else {
+			displayError();
+		}
 	};
 
 	return (

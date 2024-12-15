@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Image, Stack } from 'react-bootstrap';
 import { useParams } from 'react-router';
 import PersonService from '../../services/PersonService';
-import { fetchPersonPhoto } from '../../services/Title/title.service';
 import UserService from '../../services/UserService';
 import { useUserContext } from '../../contexts/UserContext';
 import Carousel from '../common/Carousel';
 import KnownForCard from './KnownForCard';
+import titleServiceInstance from '../../services/Title/TitleService';
 
 const Person = () => {
 	const { nconst } = useParams();
@@ -86,7 +86,9 @@ const Person = () => {
 		const personService = new PersonService();
 
 		const getPhoto = async () => {
-			const fetchedPhotoUrl = await fetchPersonPhoto(nconst);
+			const fetchedPhotoUrl = await titleServiceInstance.fetchPersonPhoto(
+				nconst
+			);
 			setPhotoUrl(fetchedPhotoUrl);
 		};
 		const getRating = async () => {
