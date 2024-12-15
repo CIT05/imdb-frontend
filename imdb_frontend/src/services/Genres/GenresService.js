@@ -1,15 +1,20 @@
-const getAllGenres = async (pageNumber) => {
-  return fetch(
-    `${process.env.REACT_APP_BASE_URL}/api/genre?pageSize=5&pageNumber=${pageNumber}`
-  )
-    .then((response) => response.json())
-    .then((data) => data);
-};
+class GenreService {
+  constructor(baseURL = `${process.env.REACT_APP_BASE_URL}/api/genre`) {
+    this.baseURL = baseURL;
+  }
 
-const getGenre = async (genreId) => {
-  return fetch(`${process.env.REACT_APP_BASE_URL}/api/genre/${genreId}`)
-    .then((response) => response.json())
-    .then((data) => data);
-};
+  getAllGenres = async (pageNumber) => {
+    return fetch(`${this.baseURL}?pageSize=5&pageNumber=${pageNumber}`)
+      .then((response) => response.json())
+      .then((data) => data);
+  };
 
-export { getAllGenres, getGenre };
+  getGenre = async (genreId) => {
+    return fetch(`${this.baseURL}/${genreId}`)
+      .then((response) => response.json())
+      .then((data) => data);
+  };
+}
+
+const genreServiceInstance = new GenreService();
+export default genreServiceInstance;

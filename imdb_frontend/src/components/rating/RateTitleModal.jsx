@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-import { saveRating } from '../../services/Rating/ratingService';
+import ratingServiceInstance from '../../services/Rating/RatingService';
 
 import './RateTitleModal.css';
 
@@ -15,7 +15,7 @@ const RateTitleModal = ({ show, handleClose, tconst, userId}) => {
   }
 
   const handleSave = async () => {
-    const response = await saveRating(userId, tconst, rating);
+    const response = await ratingServiceInstance.saveRating(userId, tconst, rating);
     if(response === 200) {
       handleClose();
     }

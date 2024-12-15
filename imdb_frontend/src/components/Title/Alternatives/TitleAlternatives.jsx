@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
 
 import { Badge, Row, Col } from 'react-bootstrap';
-import { getTitleAlternatives } from '../../../services/Title/title.service';
+import titleService from '../../../services/Title/TitleService';
 
 import './TitleAlternatives.css';
 
@@ -24,7 +24,7 @@ const TitleAlternatives = () => {
   };
 
   useEffect(() => {
-    getTitleAlternatives(tconst).then((data) => {
+    titleService.getTitleAlternatives(tconst).then((data) => {
       console.log('alternatives', data);
       setAlternatives(data);
     });

@@ -10,7 +10,7 @@ import { useParams } from 'react-router';
 import Image from 'react-bootstrap/Image';
 import Badge from 'react-bootstrap/Badge';
 
-import { getTitleAndPersons } from '../../services/Title/title.service';
+import titleServiceInstance from '../../services/Title/TitleService.js';
 import './Title.css';
 import PersonPreview from '../Person/PersonPreview.jsx';
 import Episode from './Episode/Episode.jsx';
@@ -33,7 +33,7 @@ const Title = () => {
   const [title, setTitle] = useState({});
 
   useEffect(() => {
-    getTitleAndPersons(tconst).then((data) => {
+    titleServiceInstance.getTitleAndPersons(tconst).then((data) => {
       setTitle(data);
     });
   }, [tconst]);

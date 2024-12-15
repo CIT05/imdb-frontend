@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import Star from '../../assets/star.png';
 import AllGenres from '../genres/allGenres/AllGenres';
-import { fetchAllTitles } from '../../services/Title/title.service';
+import titleServiceInstance from '../../services/Title/TitleService';
 import { Card, Col, Container, Row, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 import style from './IMDBRoot.module.css';
@@ -17,7 +17,7 @@ const IMDBRoot = () => {
 
 	useEffect(() => {
 		const getTitles = async () => {
-			const allTitles = await fetchAllTitles();
+			const allTitles = await titleServiceInstance.fetchAllTitles();
 			const sortedTitles = allTitles.items.sort(
 				(a, b) => b.startYear - a.startYear
 			);
