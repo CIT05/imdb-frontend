@@ -17,6 +17,7 @@ import PersonPreview from '../Person/PersonPreview.jsx';
 import Episode from './Episode/Episode.jsx';
 import Loading from '../loading/Loading.jsx';
 import RateTitleModal from '../rating/RateTitleModal.jsx';
+import UserService from '../../services/UserService.js';
 
 var Star = require('../../assets/star.png');
 
@@ -31,14 +32,70 @@ const Title = () => {
 	const [episodeFirstIndex, setEpisodeFirstIndex] = useState(0);
 	const [showModal, setShowModal] = useState(false);
 	const { loggedInUser } = useUserContext();
+	const [isBookmarked, setIsBookmarked] = useState(false);
 
 	const [title, setTitle] = useState({});
+	const [userInfo, setUserInfo] = useState(null);
+	const userService = new UserService();
 
 	useEffect(() => {
 		getTitleAndPersons(tconst).then((data) => {
 			setTitle(data);
 		});
 	}, [tconst]);
+
+	useEffect(() => {
+		if (loggedInUser) {
+			const fetchUserInfo = async () => {
+				const userService = new UserService();
+
+				try {
+					const data = await userService.getUserInfo(
+						loggedInUser.username
+					);
+					setUserInfo(data);
+					console.log('User info fetched:', data);
+				} catch (error) {
+					console.error('Error fetching user info:', error);
+				}
+			};
+
+			fetchUserInfo();
+		}
+	}, [loggedInUser]);
+
+	useEffect(() => {
+		if (userInfo && userInfo.titleBookmarkings) {
+			const bookmarked = userInfo.titleBookmarkings.some(
+				(bookmark) =>
+					bookmark.tConst.trim().toLowerCase() ===
+					tconst.trim().toLowerCase()
+			);
+			setIsBookmarked(bookmarked);
+		}
+	}, [userInfo, tconst]);
+
+	const handleBookmarkClick = async () => {
+		try {
+			if (isBookmarked) {
+				await userService.deleteBookmarkedTitle(
+					loggedInUser.userId,
+					tconst,
+					loggedInUser.token
+				);
+				setIsBookmarked(false);
+			} else {
+				await userService.addBookmarkedTitle(
+					loggedInUser.userId,
+					tconst,
+					loggedInUser.token
+				);
+				setIsBookmarked(true);
+			}
+		} catch (error) {
+			console.error('Error toggling bookmark:', error);
+		}
+	};
 
 	const handleTopCastClick = () => {
 		setLimitCast(!limitCast);
@@ -251,6 +308,26 @@ const Title = () => {
 															Rate the title{' '}
 														</span>
 													</Stack>
+												</Stack>
+												<Stack
+													className="d-flex justify-content-center align-items-center"
+													onClick={
+														handleBookmarkClick
+													}
+													style={{
+														cursor: 'pointer',
+													}}
+												>
+													<span className="title__section-header">
+														Bookmark
+													</span>
+													<i
+														className={`bi ${
+															isBookmarked
+																? 'bi-bookmark-check-fill'
+																: 'bi-bookmark-check'
+														} fs-2`}
+													></i>
 												</Stack>
 											</Stack>
 										</Col>

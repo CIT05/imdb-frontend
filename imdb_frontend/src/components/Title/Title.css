@@ -80,6 +80,7 @@
 
 .title__rating-container {
   margin-bottom: 2rem;
+  width: 150% !important;
 }
 
 .title__rating {

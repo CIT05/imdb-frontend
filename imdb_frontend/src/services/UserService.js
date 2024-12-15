@@ -96,6 +96,39 @@ class UserService {
 		}
 	}
 
+	async addBookmarkedPersonality(loggedInUserId, nconst, token) {
+		const timestamp = new Date().toISOString(); // Current timestamp in ISO format
+
+		const requestBody = {
+			userId: loggedInUserId,
+			timestamp: timestamp,
+			nConst: nconst,
+		};
+		try {
+			const response = await fetch(
+				`https://localhost:5002/api/bookmarking/personality?userId=${loggedInUserId}&nconst=${nconst}`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+					body: JSON.stringify(requestBody),
+				}
+			);
+
+			if (!response.ok) {
+				throw new Error('Could not bookmark personality.');
+			}
+		} catch (error) {
+			console.error(
+				'There was a problem with bookmarking personality.',
+				error
+			);
+			throw error;
+		}
+	}
+
 	async deleteBookmarkedPersonality(loggedInUserId, nconst, token) {
 		try {
 			const response = await fetch(
@@ -110,11 +143,69 @@ class UserService {
 			);
 
 			if (!response.ok) {
-				throw new Error('Could not delete bookmarking.');
+				throw new Error('Could not delete bookmarking personality.');
 			}
 		} catch (error) {
 			console.error(
-				'There was a problem with deleting bookmarking.',
+				'There was a problem with deleting bookmarking personality.',
+				error
+			);
+			throw error;
+		}
+	}
+
+	async addBookmarkedTitle(loggedInUserId, tconst, token) {
+		const timestamp = new Date().toISOString(); // Current timestamp in ISO format
+
+		const requestBody = {
+			userId: loggedInUserId,
+			timestamp: timestamp,
+			tConst: tconst,
+		};
+		try {
+			const response = await fetch(
+				`https://localhost:5002/api/bookmarking/title?userId=${loggedInUserId}&tconst=${tconst}`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+					body: JSON.stringify(requestBody),
+				}
+			);
+
+			if (!response.ok) {
+				throw new Error('Could not add bookmarking title.');
+			}
+		} catch (error) {
+			console.error(
+				'There was a problem with adding bookmarking title',
+				error
+			);
+			throw error;
+		}
+	}
+
+	async deleteBookmarkedTitle(loggedInUserId, tconst, token) {
+		try {
+			const response = await fetch(
+				`https://localhost:5002/api/bookmarking/title?userId=${loggedInUserId}&titleId=${tconst}`,
+				{
+					method: 'DELETE',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			if (!response.ok) {
+				throw new Error('Could not delete bookmarking title.');
+			}
+		} catch (error) {
+			console.error(
+				'There was a problem with deleting bookmarking title.',
 				error
 			);
 			throw error;
@@ -131,7 +222,6 @@ class UserService {
 			}
 			const data = await response.json();
 
-			// Mapping the response to the desired format
 			const languageData = data.map((language) => ({
 				name: language.name,
 				code: language.code,
