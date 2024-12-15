@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
 import ratingServiceInstance from '../../services/Rating/RatingService';
@@ -6,8 +6,8 @@ import ratingServiceInstance from '../../services/Rating/RatingService';
 import './RateTitleModal.css';
 
 const RateTitleModal = ({ show, handleClose, tconst, userId, token }) => {
-	const [rating, setRating] = React.useState(0);
-	const [error, setError] = React.useState(false);
+	const [rating, setRating] = useState(0);
+	const [error, setError] = useState(false);
 
 	const setRatingValue = (e) => {
 		setRating(e.target.value);

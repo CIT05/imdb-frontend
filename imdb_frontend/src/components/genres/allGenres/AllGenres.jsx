@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import './AllGenres.css';
 import { Container, Row } from 'react-bootstrap';
@@ -9,8 +9,8 @@ import Paginator from '../../Paginator/Paginator';
 
 const AllGenres = () => {
 
-  const [genres, setGenres] = React.useState([]);
-  const [pageNumber, setPageNumber] = React.useState(0);
+  const [genres, setGenres] = useState([]);
+  const [pageNumber, setPageNumber] = useState(0);
 
   useEffect(() => {
     genreServiceInstance.getAllGenres(pageNumber).then((data) => {
