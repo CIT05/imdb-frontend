@@ -30,7 +30,6 @@ class UserService {
 	async logIn(userData) {
 		try {
 			const response = await fetch(`${this.baseURL}/login`, {
-				// Append /login to the base URL
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -71,12 +70,13 @@ class UserService {
 		}
 	}
 
-	async editUser(userData, loggedInUserId) {
+	async editUser(userData, loggedInUserId, token) {
 		try {
 			const response = await fetch(`${this.baseURL}/${loggedInUserId}`, {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
 				},
 				body: JSON.stringify(userData),
 			});
@@ -90,6 +90,39 @@ class UserService {
 		} catch (error) {
 			console.error(
 				'There was a problem with modifying your user.',
+				error
+			);
+			throw error;
+		}
+	}
+
+	async addBookmarkedPersonality(loggedInUserId, nconst, token) {
+		const timestamp = new Date().toISOString(); // Current timestamp in ISO format
+
+		const requestBody = {
+			userId: loggedInUserId,
+			timestamp: timestamp,
+			nConst: nconst,
+		};
+		try {
+			const response = await fetch(
+				`https://localhost:5002/api/bookmarking/personality?userId=${loggedInUserId}&nconst=${nconst}`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+					body: JSON.stringify(requestBody),
+				}
+			);
+
+			if (!response.ok) {
+				throw new Error('Could not bookmark personality.');
+			}
+		} catch (error) {
+			console.error(
+				'There was a problem with bookmarking personality.',
 				error
 			);
 			throw error;
@@ -110,36 +143,93 @@ class UserService {
 			);
 
 			if (!response.ok) {
-				throw new Error('Could not delete bookmarking.');
+				throw new Error('Could not delete bookmarking personality.');
 			}
-
-			// const data = await response.json();
-			// return data;
 		} catch (error) {
 			console.error(
-				'There was a problem with deleting bookmarking.',
+				'There was a problem with deleting bookmarking personality.',
 				error
 			);
 			throw error;
 		}
 	}
 
-	async fetchCountries() {
+	async addBookmarkedTitle(loggedInUserId, tconst, token) {
+		const timestamp = new Date().toISOString(); // Current timestamp in ISO format
+
+		const requestBody = {
+			userId: loggedInUserId,
+			timestamp: timestamp,
+			tConst: tconst,
+		};
 		try {
-			const response = await fetch('https://restcountries.com/v3.1/all');
+			const response = await fetch(
+				`https://localhost:5002/api/bookmarking/title?userId=${loggedInUserId}&tconst=${tconst}`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+					body: JSON.stringify(requestBody),
+				}
+			);
+
+			if (!response.ok) {
+				throw new Error('Could not add bookmarking title.');
+			}
+		} catch (error) {
+			console.error(
+				'There was a problem with adding bookmarking title',
+				error
+			);
+			throw error;
+		}
+	}
+
+	async deleteBookmarkedTitle(loggedInUserId, tconst, token) {
+		try {
+			const response = await fetch(
+				`https://localhost:5002/api/bookmarking/title?userId=${loggedInUserId}&titleId=${tconst}`,
+				{
+					method: 'DELETE',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			if (!response.ok) {
+				throw new Error('Could not delete bookmarking title.');
+			}
+		} catch (error) {
+			console.error(
+				'There was a problem with deleting bookmarking title.',
+				error
+			);
+			throw error;
+		}
+	}
+
+	async fetchLanguages() {
+		try {
+			const response = await fetch(
+				'https://libretranslate.com/languages'
+			);
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
 			}
 			const data = await response.json();
-			const countryData = data
-				.map((country) => ({
-					name: country.name.common,
-					code: country.cca2.toLowerCase(),
-				}))
-				.sort((a, b) => a.name.localeCompare(b.name));
-			return countryData;
+
+			const languageData = data.map((language) => ({
+				name: language.name,
+				code: language.code,
+			}));
+
+			return languageData;
 		} catch (err) {
-			console.error('Error fetching country data:', err);
+			console.error('Error fetching language data:', err);
 			throw err;
 		}
 	}

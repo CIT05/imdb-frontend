@@ -3,7 +3,7 @@ import Carousel from 'react-bootstrap/Carousel';
 import Star from '../../assets/star.png';
 import AllGenres from '../genres/allGenres/AllGenres';
 import PersonService from '../../services/PersonService';
-import { fetchAllTitles, fetchPersonPhoto } from '../../services/Title/title.service';
+import titleServiceInstance from '../../services/Title/TitleService.js';
 import { Card, Col, Container, Row, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 import style from './IMDBRoot.module.css';
@@ -119,7 +119,7 @@ const IMDBRoot = () => {
 
     useEffect(() => {
         const getTitles = async () => {
-            const allTitles = await fetchAllTitles();
+            const allTitles = await titleServiceInstance.fetchAllTitles();
             setTitles(getPopularItems(allTitles.items, 'startYear', 5));
             setLuckyTitles(shuffleArray(allTitles.items).slice(0, 5));
             setPopularTitles(getPopularItems(allTitles.items, 'rating.averageRating', 10));
@@ -134,7 +134,7 @@ const IMDBRoot = () => {
             const updatedCelebs = await Promise.all(
                 data.items.map(async (celeb) => {
                     const id = celeb.url.split('/').pop();
-                    const photo = await fetchPersonPhoto(id);
+                    const photo = await titleServiceInstance.fetchPersonPhoto(id);
                     return {
                         ...celeb,
                         photoUrl: photo || null,

@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router';
 import styles from './style.module.css';
 import React, { useState, useEffect } from 'react';
 import { Card } from 'react-bootstrap';
-import { fetchPersonPhoto } from '../../services/Title/title.service';
+import titleServiceInstance from '../../services/Title/TitleService';
 import { useUserContext } from '../../contexts/UserContext';
 import UserService from '../../services/UserService';
 
@@ -41,12 +41,8 @@ const BookmarkedPers = ({ bookmarkedPers, onDelete }) => {
 	};
 
 	useEffect(() => {
-		console.log('bookedmarke personality', bookmarkedPers);
-	}, []);
-
-	useEffect(() => {
 		const getPhoto = async () => {
-			const fetchedPhotoUrl = await fetchPersonPhoto(
+			const fetchedPhotoUrl = await titleServiceInstance.fetchPersonPhoto(
 				bookmarkedPers.nConst
 			);
 			setPhotoUrl(fetchedPhotoUrl);

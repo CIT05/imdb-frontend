@@ -44,20 +44,16 @@ const Navigation = () => {
 							<i className="bi bi-x-lg"></i>
 						</Nav.Link>
 						<Nav.Link href="/">Home</Nav.Link>
-						<Nav.Link href="/signup">Sign up</Nav.Link>
-						 {/* !ADELINA to lmk what we actually do when we log out  */}
-						{ !loggedInUser ? <Nav.Link href="/login">Log in</Nav.Link> : <Nav.Link href="/logout">Log out</Nav.Link> }  
+						{ !loggedInUser && <Nav.Link href="/signup">Sign up</Nav.Link>}
+						{ !loggedInUser && <Nav.Link href="/login">Log in</Nav.Link> }  
 						{ loggedInUser ? <Nav.Link href="/profile">Profile</Nav.Link> : null }
+						<Nav.Link href="/genres">All genres</Nav.Link>
 					</Nav>
 				</Navbar.Collapse>
 
 				{!isExpanded && (
 					<Nav className={`d-none d-lg-flex ${style.profile}`}>
-						<Nav.Link
-							href="/profile"
-							target="_blank"
-							rel="noopener noreferrer"
-						>
+						<Nav.Link href="/profile">
 							<i className="bi bi-person-circle fs-4"></i>
 						</Nav.Link>
 					</Nav>

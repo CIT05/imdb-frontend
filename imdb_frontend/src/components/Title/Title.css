@@ -80,6 +80,7 @@
 
 .title__rating-container {
   margin-bottom: 2rem;
+  width: 150% !important;
 }
 
 .title__rating {
@@ -182,7 +183,10 @@
   gap: 1rem;
   grid-template-columns: repeat(2, 1fr);
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1450px) {
     grid-template-columns: 1fr;
   }
+
+  width: 100%; 
+  box-sizing: border-box;
 }

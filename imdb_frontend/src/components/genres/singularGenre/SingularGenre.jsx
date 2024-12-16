@@ -11,7 +11,7 @@ import {
 	Offcanvas,
 } from 'react-bootstrap';
 
-import { getGenre } from '../../../services/Genres/GenresService';
+import genreServiceInstance from '../../../services/Genres/GenresService';
 
 import Paginator from '../../Paginator/Paginator';
 
@@ -38,7 +38,7 @@ const SingularGenre = () => {
 	);
 
 	useEffect(() => {
-		getGenre(genreId).then((data) => {
+		genreServiceInstance.getGenre(genreId).then((data) => {
 			console.log(data);
 			setGenre(data);
 			setFilteredTitlesGenre(data);

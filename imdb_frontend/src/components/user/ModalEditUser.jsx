@@ -1,19 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useUserContext } from '../../contexts/UserContext';
 import UserService from '../../services/UserService';
 
-const ModalEditUser = (props) => {
-	const { countries, loggedInUser } = useUserContext();
+const ModalEditUser = ({ setUserInfo, onHide, show }) => {
+	const { languages, loggedInUser } = useUserContext();
 	const [formData, setFormData] = useState({
 		username: '',
-		password: '',
-		repeatPassword: '',
 		language: '',
 	});
 	const [errors, setErrors] = useState({});
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState('');
+
+	useEffect(() => {
+		if (loggedInUser) {
+			const fetchUserInfo = async () => {
+				const userService = new UserService();
+
+				try {
+					const data = await userService.getUserInfo(
+						loggedInUser.username
+					);
+					setFormData({
+						username: data.username || '',
+						language: data.language || '',
+					});
+					console.log('User info fetched:', data);
+				} catch (error) {
+					console.error('Error fetching user info:', error);
+				}
+			};
+
+			fetchUserInfo();
+		}
+	}, [loggedInUser]);
 
 	function handleChange(e) {
 		const { name, value } = e.target;
@@ -26,14 +47,6 @@ const ModalEditUser = (props) => {
 		if (!formData.username.trim()) {
 			newErrors.username = 'Username is required';
 		}
-		if (!formData.password) {
-			newErrors.password = 'Password is required';
-		} else if (formData.password.length < 6) {
-			newErrors.password = 'Password must be at least 6 characters';
-		}
-		if (formData.password !== formData.repeatPassword) {
-			newErrors.repeatPassword = 'Passwords must match';
-		}
 		if (!formData.language) {
 			newErrors.language = 'Language selection is required';
 		}
@@ -42,7 +55,6 @@ const ModalEditUser = (props) => {
 		return Object.keys(newErrors).length === 0;
 	}
 
-	// Handle form submission
 	async function handleSubmit(e) {
 		e.preventDefault();
 
@@ -56,12 +68,19 @@ const ModalEditUser = (props) => {
 		try {
 			const userData = {
 				username: formData.username,
-				password: formData.password,
 				language: formData.language,
 			};
 
 			const userService = new UserService();
-			await userService.editUser(userData, loggedInUser.userId);
+			await userService.editUser(
+				userData,
+				loggedInUser.userId,
+				loggedInUser.token
+			);
+			setUserInfo((prevUserInfo) => ({
+				...prevUserInfo,
+				language: formData.language,
+			}));
 			console.log('User modified successfully:', userData);
 		} catch (err) {
 			setError('An error occurred while modifying. Please try again.');
@@ -73,7 +92,8 @@ const ModalEditUser = (props) => {
 
 	return (
 		<Modal
-			{...props}
+			onHide={onHide}
+			show={show}
 			size="lg"
 			aria-labelledby="contained-modal-title-vcenter"
 			centered
@@ -101,39 +121,6 @@ const ModalEditUser = (props) => {
 						</Form.Control.Feedback>
 					</Form.Group>
 
-					<Form.Group className="mb-3" controlId="formBasicPassword">
-						<Form.Label>Password</Form.Label>
-						<Form.Control
-							type="password"
-							placeholder="Password"
-							name="password"
-							value={formData.password}
-							onChange={handleChange}
-							isInvalid={!!errors.password}
-						/>
-						<Form.Control.Feedback type="invalid">
-							{errors.password}
-						</Form.Control.Feedback>
-					</Form.Group>
-
-					<Form.Group
-						className="mb-3"
-						controlId="formBasicRepeatPassword"
-					>
-						<Form.Label>Repeat Password</Form.Label>
-						<Form.Control
-							type="password"
-							placeholder="Repeat Password"
-							name="repeatPassword"
-							value={formData.repeatPassword}
-							onChange={handleChange}
-							isInvalid={!!errors.repeatPassword}
-						/>
-						<Form.Control.Feedback type="invalid">
-							{errors.repeatPassword}
-						</Form.Control.Feedback>
-					</Form.Group>
-
 					<Form.Group
 						className="mb-5 w-50"
 						controlId="preferredLanguage"
@@ -148,9 +135,12 @@ const ModalEditUser = (props) => {
 							<option value="">
 								Choose your preferred language
 							</option>
-							{countries.map((country) => (
-								<option key={country.code} value={country.code}>
-									{country.name}
+							{languages.map((language) => (
+								<option
+									key={language.code}
+									value={language.code}
+								>
+									{language.name}
 								</option>
 							))}
 						</Form.Select>
@@ -166,6 +156,7 @@ const ModalEditUser = (props) => {
 					className="align-self-center w-25"
 					variant="outline-info"
 					type="submit"
+					onClick={handleSubmit}
 				>
 					{loading ? 'Editing profile...' : 'Edit profile'}
 				</Button>

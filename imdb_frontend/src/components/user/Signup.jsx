@@ -16,7 +16,7 @@ const Signup = () => {
 	const [errors, setErrors] = useState({});
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState('');
-	const { countries, setCountries } = useUserContext();
+	const { languages, setLanguages } = useUserContext();
 
 	function handleChange(e) {
 		const { name, value } = e.target;
@@ -76,18 +76,20 @@ const Signup = () => {
 	}
 
 	useEffect(() => {
-		const fetchCountries = async () => {
+		const fetchLanguages = async () => {
 			try {
 				const userService = new UserService();
-				const countryData = await userService.fetchCountries();
-				setCountries(countryData);
+				const languageData = await userService.fetchLanguages();
+				setLanguages(languageData); // Correctly updating the state
+				setLoading(false); // Optionally stop the loading state
 			} catch (err) {
-				console.error('Error fetching country data:', err);
+				console.error('Error fetching language data:', err);
+				setLoading(false);
 			}
 		};
 
-		fetchCountries();
-	}, [setCountries]);
+		fetchLanguages();
+	}, [setLanguages]);
 
 	return (
 		<Container
@@ -156,18 +158,18 @@ const Signup = () => {
 							onChange={handleChange}
 							isInvalid={!!errors.language}
 						>
-							<option value="">Choose a country</option>
-							{countries && countries.length > 0 ? (
-								countries.map((country) => (
+							<option value="">Choose a language</option>
+							{languages && languages.length > 0 ? (
+								languages.map((language) => (
 									<option
-										key={country.code}
-										value={country.code}
+										key={language.code}
+										value={language.code}
 									>
-										{country.name}
+										{language.name} ({language.code})
 									</option>
 								))
 							) : (
-								<option disabled>Loading countries...</option>
+								<option disabled>Loading languages...</option>
 							)}
 						</Form.Select>
 						<Form.Control.Feedback type="invalid">

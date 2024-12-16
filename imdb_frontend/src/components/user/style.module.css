@@ -3,12 +3,12 @@
 	max-height: 80vh; 
 	overflow-y: auto; 
 	padding-top: 300px;
-	padding-bottom: 300px;	
+	padding-bottom: 300px;
 }
 
 .card {
 	width: 18rem;
-	height: 8rem;
+	min-height: 8rem;
 	cursor: pointer;
 }
 
