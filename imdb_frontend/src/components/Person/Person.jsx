@@ -162,7 +162,7 @@ const Person = () => {
 						<h3 className="text-info">
 							{!person.deathYear
 								? `Birth year: ${person.birthYear}`
-								: person.birthYear - person.deathYear}
+								: `${person.birthYear} - ${person.deathYear}`}
 						</h3>
 					</Row>
 					<Row className="bg-dark border border-info rounded p-3 d-inline-block my-3 ms-1">
