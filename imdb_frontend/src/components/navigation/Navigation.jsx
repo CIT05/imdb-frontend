@@ -44,7 +44,7 @@ const Navigation = () => {
 							<i className="bi bi-x-lg"></i>
 						</Nav.Link>
 						<Nav.Link href="/">Home</Nav.Link>
-						{ !loggedInUser && <Nav.Link href="/signup">Sign up</Nav.Link>}
+					 	<Nav.Link href="/signup">Sign up</Nav.Link>
 						{ !loggedInUser && <Nav.Link href="/login">Log in</Nav.Link> }  
 						{ loggedInUser ? <Nav.Link href="/profile">Profile</Nav.Link> : null }
 						<Nav.Link href="/genres">All genres</Nav.Link>

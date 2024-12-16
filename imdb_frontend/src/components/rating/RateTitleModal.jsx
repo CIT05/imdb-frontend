@@ -1,15 +1,25 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
 import ratingServiceInstance from '../../services/Rating/ratingService';
 import './RateTitleModal.css';
 
 const RateTitleModal = ({ show, handleClose, tconst, userId, token }) => {
-	const [rating, setRating] = React.useState(0);
-	const [error, setError] = React.useState(false);
+	const [rating, setRating] = useState(0);
+	const [error, setError] = useState(false);
 
 	const setRatingValue = (e) => {
 		setRating(e.target.value);
+	};
+
+	const handleSave = async () => {
+		const response = await ratingServiceInstance.saveRating(userId, tconst, rating, token);
+		console.log(response);
+		if (response === 200 || response === 204) {
+			handleClose();
+		} else {
+			displayError();
+		}
 	};
 
 	const displayError = () => {
@@ -17,19 +27,6 @@ const RateTitleModal = ({ show, handleClose, tconst, userId, token }) => {
 		setTimeout(() => {
 			setError(false);
 		}, 3000);
-	};
-	const handleSave = async () => {
-		const response = await ratingServiceInstance.saveRating(
-			userId,
-			tconst,
-			rating,
-			token
-		);
-		if (response.ok) {
-			handleClose();
-		} else {
-			displayError();
-		}
 	};
 
 	return (

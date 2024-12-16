@@ -255,7 +255,7 @@ const AdvancedSearch = () => {
                     {activeTab === 'celebs' && (
                         <>
                             <Card.Title>{result.actorName}</Card.Title>
-                            <Card.Link href={`/name/${id}`}>See celeb</Card.Link>
+                            <Card.Link href={`/person/${id}`}>See celeb</Card.Link>
                         </>
                     )}
                 </Card.Body>

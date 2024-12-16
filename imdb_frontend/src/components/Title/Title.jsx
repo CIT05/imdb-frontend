@@ -34,16 +34,19 @@ const Title = () => {
 	const [showModal, setShowModal] = useState(false);
 	const { loggedInUser } = useUserContext();
 	const [isBookmarked, setIsBookmarked] = useState(false);
+	const [isLoaded, setIsLoaded] = useState(false);
 
 	const [title, setTitle] = useState({});
 	const [userInfo, setUserInfo] = useState(null);
 	const userService = new UserService();
 
-	useEffect(() => {
-		titleServiceInstance.getTitleAndPersons(tconst).then((data) => {
-			setTitle(data);
-		});
-	}, [tconst]);
+  useEffect(() => {
+		setIsLoaded(false);
+    	titleServiceInstance.getTitleAndPersons(tconst).then((data) => {
+      setTitle(data);
+			setIsLoaded(true);
+    });
+  }, [tconst]);
 
 	useEffect(() => {
 		if (loggedInUser) {
@@ -161,10 +164,10 @@ const Title = () => {
 
 	return (
 		<>
-			{title && title.url ? (
+			{isLoaded && title ? (
 				<>
-					{title.url ? (
-						<div className="title__container">
+					<div className="title__container">
+					{title.url && title.status !== 400 ? (
 							<Container fluid className="title__content">
 								<Row className="title__row">
 									<Col>
@@ -773,20 +776,24 @@ const Title = () => {
 										</Stack>
 									</Row>
 								)}
-							</Container>
-							{loggedInUser && (
+								{loggedInUser && 
 								<RateTitleModal
-									show={showModal}
-									handleClose={handleClose}
-									userId={loggedInUser.userId}
-									tconst={title.url.split('/').pop()}
-									token={loggedInUser.token}
-								></RateTitleModal>
-							)}
-						</div>
-					) : (
+								show={showModal}
+								handleClose={handleClose}
+								userId={loggedInUser.userId}
+								tconst={title.url.split('/').pop()}
+								token={loggedInUser.token}>
+								</RateTitleModal>
+								}
+								
+								</Container>
+								): (
 						<div>No title found</div>
-					)}
+						)}
+							
+							
+					</div>
+					
 				</>
 			) : (
 				<Loading />

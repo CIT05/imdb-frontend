@@ -159,11 +159,13 @@ const Person = () => {
 						</h1>
 					</Row>
 					<Row>
-						<h3 className="text-info">
-							{!person.deathYear
-								? `Birth year: ${person.birthYear}`
-								: person.birthYear - person.deathYear}
-						</h3>
+					{(person.birthYear || person.deathYear) && (
+  <h3 className="text-info">
+    {!person.deathYear
+      ? `Birth year: ${person.birthYear}`
+      : `${person.birthYear} - ${person.deathYear}`}
+  </h3>
+)}
 					</Row>
 					<Row className="bg-dark border border-info rounded p-3 d-inline-block my-3 ms-1">
 						<h3 className="text-light">

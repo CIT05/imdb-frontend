@@ -106,7 +106,7 @@ class UserService {
 		};
 		try {
 			const response = await fetch(
-				`https://localhost:5002/api/bookmarking/personality?userId=${loggedInUserId}&nconst=${nconst}`,
+				`${process.env.REACT_APP_BASE_URL}/api/bookmarking/personality?userId=${loggedInUserId}&nconst=${nconst}`,
 				{
 					method: 'POST',
 					headers: {
@@ -132,7 +132,7 @@ class UserService {
 	async deleteBookmarkedPersonality(loggedInUserId, nconst, token) {
 		try {
 			const response = await fetch(
-				`https://localhost:5002/api/bookmarking/personality?userId=${loggedInUserId}&nconst=${nconst}`,
+				`${process.env.REACT_APP_BASE_URL}/api/bookmarking/personality?userId=${loggedInUserId}&nconst=${nconst}`,
 				{
 					method: 'DELETE',
 					headers: {
@@ -164,7 +164,7 @@ class UserService {
 		};
 		try {
 			const response = await fetch(
-				`https://localhost:5002/api/bookmarking/title?userId=${loggedInUserId}&tconst=${tconst}`,
+				`${process.env.REACT_APP_BASE_URL}/api/bookmarking/title?userId=${loggedInUserId}&tconst=${tconst}`,
 				{
 					method: 'POST',
 					headers: {
@@ -190,7 +190,7 @@ class UserService {
 	async deleteBookmarkedTitle(loggedInUserId, tconst, token) {
 		try {
 			const response = await fetch(
-				`https://localhost:5002/api/bookmarking/title?userId=${loggedInUserId}&titleId=${tconst}`,
+				`${process.env.REACT_APP_BASE_URL}/api/bookmarking/title?userId=${loggedInUserId}&titleId=${tconst}`,
 				{
 					method: 'DELETE',
 					headers: {

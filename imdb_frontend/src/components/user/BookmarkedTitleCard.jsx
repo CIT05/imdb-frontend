@@ -25,7 +25,7 @@ const BookmarkedTitleCard = ({ bookmarkedTitle, onDelete }) => {
 	const handleDelete = async (id) => {
 		try {
 			const userService = new UserService();
-			await userService.deleteBookmarkedPersonality(
+			await userService.deleteBookmarkedTitle(
 				loggedInUser.userId,
 				bookmarkedTitle.tConst,
 				loggedInUser.token

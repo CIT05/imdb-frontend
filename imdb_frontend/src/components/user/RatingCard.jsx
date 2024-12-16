@@ -30,7 +30,7 @@ const RatingCard = ({ rating }) => {
 			</Card.Header>
 			<Card.Body className="d-flex align-items-end">
 				<Card.Title className="d-flex justify-content-between align-items-end w-100">
-					<span>{rating.title?.titleName || 'Loading...'}</span>
+					<span>{rating.title?.primaryTitle || 'Loading...'}</span>
 					<div className="d-flex align-items-center gap-1">
 						<span>{rating.value}</span>
 						<i className="bi bi-star-fill text-warning"></i>

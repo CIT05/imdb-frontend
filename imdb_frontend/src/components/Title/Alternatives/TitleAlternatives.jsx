@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
 import { Badge, Row, Col } from 'react-bootstrap';
@@ -9,7 +9,7 @@ import './TitleAlternatives.css';
 
 const TitleAlternatives = () => {
   const { tconst } = useParams();
-  const [alternatives, setAlternatives] = React.useState([]);
+  const [alternatives, setAlternatives] = useState([]);
 
   const originalTitle = alternatives.filter(
     (alternative) => alternative.isOriginalTitle === 'True'
