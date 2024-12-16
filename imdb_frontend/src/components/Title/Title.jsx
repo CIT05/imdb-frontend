@@ -54,7 +54,6 @@ const Title = () => {
 						loggedInUser.username
 					);
 					setUserInfo(data);
-					console.log('User info fetched:', data);
 				} catch (error) {
 					console.error('Error fetching user info:', error);
 				}
@@ -65,7 +64,7 @@ const Title = () => {
 	}, [loggedInUser]);
 
 	useEffect(() => {
-		if (userInfo && userInfo.titleBookmarkings) {
+		if (loggedInUser && userInfo && userInfo.titleBookmarkings) {
 			const bookmarked = userInfo.titleBookmarkings.some(
 				(bookmark) =>
 					bookmark.tConst.trim().toLowerCase() ===
@@ -291,44 +290,50 @@ const Title = () => {
 														</Stack>
 													</Stack>
 												)}
-
 												<Stack
 													direction="vertical"
 													className="title__your-rating"
 													onClick={rateTitle}
 												>
-													<span className="title__section-header">
-														Your rating
-													</span>
-													<Stack direction="horizontal">
-														<i className="bi bi-star title__rate-icon">
-															{' '}
-														</i>
-														<span className="title__rate-text">
-															Rate the title{' '}
+													{loggedInUser && (
+														<>
+															<span className="title__section-header">
+																Your rating
+															</span>
+															<Stack direction="horizontal">
+																<i className="bi bi-star title__rate-icon">
+																	{' '}
+																</i>
+																<span className="title__rate-text">
+																	Rate the
+																	title{' '}
+																</span>
+															</Stack>
+														</>
+													)}
+												</Stack>
+												{loggedInUser && (
+													<Stack
+														className="d-flex justify-content-center align-items-center"
+														onClick={
+															handleBookmarkClick
+														}
+														style={{
+															cursor: 'pointer',
+														}}
+													>
+														<span className="title__section-header">
+															Bookmark
 														</span>
+														<i
+															className={`bi ${
+																isBookmarked
+																	? 'bi-bookmark-check-fill'
+																	: 'bi-bookmark-check'
+															} fs-2`}
+														></i>
 													</Stack>
-												</Stack>
-												<Stack
-													className="d-flex justify-content-center align-items-center"
-													onClick={
-														handleBookmarkClick
-													}
-													style={{
-														cursor: 'pointer',
-													}}
-												>
-													<span className="title__section-header">
-														Bookmark
-													</span>
-													<i
-														className={`bi ${
-															isBookmarked
-																? 'bi-bookmark-check-fill'
-																: 'bi-bookmark-check'
-														} fs-2`}
-													></i>
-												</Stack>
+												)}
 											</Stack>
 										</Col>
 										<p className="title__plot">
@@ -768,13 +773,15 @@ const Title = () => {
 									</Row>
 								)}
 							</Container>
-							<RateTitleModal
-								show={showModal}
-								handleClose={handleClose}
-								userId={loggedInUser.userId}
-								tconst={title.url.split('/').pop()}
-								token={loggedInUser.token}
-							></RateTitleModal>
+							{loggedInUser && (
+								<RateTitleModal
+									show={showModal}
+									handleClose={handleClose}
+									userId={loggedInUser.userId}
+									tconst={title.url.split('/').pop()}
+									token={loggedInUser.token}
+								></RateTitleModal>
+							)}
 						</div>
 					) : (
 						<div>No title found</div>

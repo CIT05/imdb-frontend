@@ -41,10 +41,6 @@ const BookmarkedPers = ({ bookmarkedPers, onDelete }) => {
 	};
 
 	useEffect(() => {
-		console.log('bookedmarke personality', bookmarkedPers);
-	}, []);
-
-	useEffect(() => {
 		const getPhoto = async () => {
 			const fetchedPhotoUrl = await titleServiceInstance.fetchPersonPhoto(
 				bookmarkedPers.nConst

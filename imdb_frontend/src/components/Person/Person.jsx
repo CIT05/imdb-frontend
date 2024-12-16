@@ -22,6 +22,10 @@ const Person = () => {
 	const userService = new UserService();
 
 	useEffect(() => {
+		console.log('PERSON DATA', person);
+	}, [person]);
+
+	useEffect(() => {
 		if (loggedInUser) {
 			const fetchUserInfo = async () => {
 				const userService = new UserService();
@@ -167,27 +171,29 @@ const Person = () => {
 							<i className="bi bi-star-fill text-warning"></i>
 						</h3>
 					</Row>
-					<Row>
-						<Stack
-							onClick={handleBookmarkClick}
-							style={{
-								cursor: 'pointer',
-							}}
-						>
-							<Stack className="d-flex flex-row align-items-center gap-2">
-								<span className="title__section-header">
-									Bookmark
-								</span>
-								<i
-									className={`bi ${
-										isBookmarked
-											? 'bi-bookmark-check-fill'
-											: 'bi-bookmark-check'
-									} fs-2`}
-								></i>
+					{loggedInUser && (
+						<Row>
+							<Stack
+								onClick={handleBookmarkClick}
+								style={{
+									cursor: 'pointer',
+								}}
+							>
+								<Stack className="d-flex flex-row align-items-center gap-2">
+									<span className="title__section-header">
+										Bookmark
+									</span>
+									<i
+										className={`bi ${
+											isBookmarked
+												? 'bi-bookmark-check-fill'
+												: 'bi-bookmark-check'
+										} fs-2`}
+									></i>
+								</Stack>
 							</Stack>
-						</Stack>
-					</Row>
+						</Row>
+					)}
 				</Col>
 			</Row>
 			<Row className="w-75">

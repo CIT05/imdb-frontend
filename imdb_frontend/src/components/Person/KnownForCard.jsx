@@ -7,8 +7,6 @@ const KnownForCard = (knownForItem) => {
 	const titleId = url.match(/\/([^/]+)$/)?.[1];
 	const { titleName, poster } = title || {};
 
-	console.log('TITLE', knownForItem);
-
 	return (
 		<Card
 			onClick={() => navigate(`/title/${titleId}`)}

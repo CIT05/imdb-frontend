@@ -49,11 +49,7 @@ const Navigation = () => {
 
 				{!isExpanded && (
 					<Nav className={`d-none d-lg-flex ${style.profile}`}>
-						<Nav.Link
-							href="/profile"
-							target="_blank"
-							rel="noopener noreferrer"
-						>
+						<Nav.Link href="/profile">
 							<i className="bi bi-person-circle fs-4"></i>
 						</Nav.Link>
 					</Nav>

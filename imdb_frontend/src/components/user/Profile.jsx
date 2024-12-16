@@ -1,4 +1,4 @@
-import { Container } from 'react-bootstrap';
+import { Container, Stack } from 'react-bootstrap';
 import { useUserContext } from '../../contexts/UserContext';
 import { useEffect, useState } from 'react';
 import UserService from '../../services/UserService';
@@ -8,20 +8,28 @@ import RatingCard from './RatingCard';
 import BookmarkedTitleCard from './BookmarkedTitleCard';
 import BookmarkedPers from './BookmarkedPers';
 import ModalEditUser from './ModalEditUser';
+import { useNavigate } from 'react-router';
 
 const Profile = () => {
 	const { loggedInUser } = useUserContext();
+	const navigate = useNavigate();
+
 	const [userInfo, setUserInfo] = useState(null);
 	const [modalShow, setModalShow] = useState(false);
 	const { languages, setLanguages } = useUserContext();
 	const randomSeed = Math.random().toString(36).substring(7);
+
+	const handleLogout = () => {
+		localStorage.removeItem('loggedInUser');
+		navigate('/login');
+	};
 
 	useEffect(() => {
 		const fetchLanguages = async () => {
 			try {
 				const userService = new UserService();
 				const languageData = await userService.fetchLanguages();
-				setLanguages(languageData); // Correctly updating the state // Optionally stop the loading state
+				setLanguages(languageData);
 			} catch (err) {
 				console.error('Error fetching language data:', err);
 			}
@@ -50,13 +58,22 @@ const Profile = () => {
 		}
 	}, [loggedInUser, userInfo?.language]);
 
-	const handleItemDelete = (deletedId) => {
+	const handlePersonalityDelete = (deletedId) => {
 		setUserInfo((prevUserInfo) => ({
 			...prevUserInfo,
 			personalityBookmarkings:
 				prevUserInfo.personalityBookmarkings.filter(
 					(item) => item.nConst !== deletedId
 				),
+		}));
+	};
+
+	const handleTitleDelete = (deletedId) => {
+		setUserInfo((prevUserInfo) => ({
+			...prevUserInfo,
+			titleBookmarkings: prevUserInfo.titleBookmarkings.filter(
+				(item) => item.tConst !== deletedId
+			),
 		}));
 	};
 
@@ -98,13 +115,20 @@ const Profile = () => {
 											{userInfo.language}
 										</p>
 									</Row>
-									<Row>
+									<Row className="d-flex flex-column">
 										<Button
 											variant="outline-info"
 											className="w-25 mx-3 my-2"
 											onClick={() => setModalShow(true)}
 										>
 											Edit Profile
+										</Button>
+										<Button
+											variant="danger"
+											className="w-25 mx-3 my-2"
+											onClick={handleLogout}
+										>
+											Log out
 										</Button>
 									</Row>
 								</Col>
@@ -135,6 +159,7 @@ const Profile = () => {
 									renderItem={(bookmarkedTitle) => (
 										<BookmarkedTitleCard
 											bookmarkedTitle={bookmarkedTitle}
+											onDelete={handleTitleDelete}
 										/>
 									)}
 								/>
@@ -150,14 +175,22 @@ const Profile = () => {
 									renderItem={(bookmarkedPers) => (
 										<BookmarkedPers
 											bookmarkedPers={bookmarkedPers}
-											onDelete={handleItemDelete}
+											onDelete={handlePersonalityDelete}
 										/>
 									)}
 								/>
 							</Row>
 						</Container>
 					) : (
-						<h1 className="text-light">Please log in</h1>
+						<>
+							<h1 className="text-light">Please log in</h1>
+							<Button
+								variant="info"
+								onClick={() => navigate('/login')}
+							>
+								Go to login
+							</Button>
+						</>
 					)}
 					<ModalEditUser
 						show={modalShow}
@@ -166,7 +199,21 @@ const Profile = () => {
 					/>
 				</Container>
 			) : (
-				<h1 className="text-light">Please log in</h1>
+				<Stack
+					className="align-items-center justify-content-center gap-3"
+					style={{ minHeight: '50vh' }}
+				>
+					<h1 className="text-light">
+						In order to access this page please log in first. If you
+						don't have an account, sign up.
+					</h1>
+					<Button variant="info" onClick={() => navigate('/login')}>
+						Log in
+					</Button>
+					<Button variant="info" onClick={() => navigate('/signup')}>
+						Sign up
+					</Button>
+				</Stack>
 			)}
 		</Container>
 	);
