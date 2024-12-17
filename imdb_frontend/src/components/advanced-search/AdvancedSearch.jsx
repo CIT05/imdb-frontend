@@ -39,7 +39,7 @@ const AdvancedSearch = () => {
         }).catch(error => {
             console.error('Error during search:', error);
         });
-    }, []);
+    }, [userId]);
     
 
     const handleSearchCelebs = useCallback(() => {
@@ -63,7 +63,7 @@ const AdvancedSearch = () => {
         }).catch(error => {
             console.error('Error during search:', error);
         });
-    }, []);
+    }, [userId]);
     
 
     const sortedResults = useCallback(() => {
@@ -80,9 +80,13 @@ const AdvancedSearch = () => {
     useEffect(() => {
         setResults([]);
     }, [activeTab]);
+
+    useEffect(() => {
+        !loggedInUser && window.location.replace('/login');
+    },[loggedInUser]);
+
+
     return (
-        <>
-        {loggedInUser ?
         <>
         <div className={style.advancedContainer}>
             <h1 className={[style.h1]}>Advanced Search</h1>
@@ -283,9 +287,6 @@ const AdvancedSearch = () => {
         </div>
     )}        </>
             )}
-  
-        </>
-        : <h1>Please log in to use this feature</h1>}
         </>
     );
 };
