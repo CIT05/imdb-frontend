@@ -8,7 +8,7 @@ import titleServiceInstance from '../../services/Title/TitleService.js';
 import PersonPreview from '../Person/PersonPreview.jsx';
 import Episode from './Episode/Episode.jsx';
 import Loading from '../loading/Loading.jsx';
-import RateTitleModal from '../rating/RateTitleModal.jsx';
+import RateTitleModal from '../Rating/RateTitleModal.jsx';
 import UserService from '../../services/User/UserService.js';
 import Star from '../../assets/star.png';
 import { Stack, Button } from 'react-bootstrap';
