@@ -1,7 +1,7 @@
-import { useNavigate } from 'react-router';
-import styles from './style.module.css';
 import React from 'react';
+import { useNavigate } from 'react-router';
 import { Card } from 'react-bootstrap';
+import styles from './style.module.css';
 
 const RatingCard = ({ rating }) => {
 	const navigate = useNavigate();

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Image, Stack } from 'react-bootstrap';
-import { useParams } from 'react-router';
-import PersonService from '../../services/PersonService';
-import UserService from '../../services/UserService';
-import { useUserContext } from '../../contexts/UserContext';
+import PersonService from '../../services/Person/PersonService';
+import UserService from '../../services/User/UserService';
 import Carousel from '../common/Carousel';
 import KnownForCard from './KnownForCard';
 import titleServiceInstance from '../../services/Title/TitleService';
+import { Container, Row, Col, Image, Stack } from 'react-bootstrap';
+import { useParams } from 'react-router';
+import { useUserContext } from '../../contexts/UserContext';
 
 const Person = () => {
 	const { nconst } = useParams();

@@ -1,10 +1,7 @@
-// @ts-nocheck
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
-
-import { Badge, Row, Col } from 'react-bootstrap';
 import titleService from '../../../services/Title/TitleService';
-
+import { useParams } from 'react-router';
+import { Badge, Row, Col } from 'react-bootstrap';
 import './TitleAlternatives.css';
 
 const TitleAlternatives = () => {

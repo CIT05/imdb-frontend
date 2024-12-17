@@ -1,9 +1,9 @@
+import React from 'react';
+import UserService from '../../services/User/UserService';
+import { Card } from 'react-bootstrap';
+import { useUserContext } from '../../contexts/UserContext';
 import { useNavigate } from 'react-router';
 import styles from './style.module.css';
-import React from 'react';
-import { Card } from 'react-bootstrap';
-import UserService from '../../services/UserService';
-import { useUserContext } from '../../contexts/UserContext';
 
 const BookmarkedTitleCard = ({ bookmarkedTitle, onDelete }) => {
 	const navigate = useNavigate();

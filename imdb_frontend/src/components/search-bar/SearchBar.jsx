@@ -1,9 +1,9 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { useUserContext } from '../../contexts/UserContext';
 import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Spinner from 'react-bootstrap/Spinner';
 import searchServiceInstance from '../../services/Search/SearchService';
+import { useUserContext } from '../../contexts/UserContext';
 
 const SearchBar = () => {
   const [query, setQuery] = useState('');

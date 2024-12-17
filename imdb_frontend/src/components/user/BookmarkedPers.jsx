@@ -1,10 +1,10 @@
-import { useNavigate } from 'react-router';
-import styles from './style.module.css';
 import React, { useState, useEffect } from 'react';
-import { Card } from 'react-bootstrap';
+import UserService from '../../services/User/UserService';
 import titleServiceInstance from '../../services/Title/TitleService';
 import { useUserContext } from '../../contexts/UserContext';
-import UserService from '../../services/UserService';
+import { useNavigate } from 'react-router';
+import { Card } from 'react-bootstrap';
+import styles from './style.module.css';
 
 const BookmarkedPers = ({ bookmarkedPers, onDelete }) => {
 	const navigate = useNavigate();

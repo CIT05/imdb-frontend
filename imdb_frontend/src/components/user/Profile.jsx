@@ -1,13 +1,13 @@
-import { Container, Stack } from 'react-bootstrap';
-import { useUserContext } from '../../contexts/UserContext';
-import { useEffect, useState } from 'react';
-import UserService from '../../services/UserService';
-import { Image, Button, Row, Col } from 'react-bootstrap';
 import Carousel from '../common/Carousel';
 import RatingCard from './RatingCard';
 import BookmarkedTitleCard from './BookmarkedTitleCard';
 import BookmarkedPers from './BookmarkedPers';
 import ModalEditUser from './ModalEditUser';
+import UserService from '../../services/User/UserService';
+import { Container, Stack } from 'react-bootstrap';
+import { useUserContext } from '../../contexts/UserContext';
+import { useEffect, useState } from 'react';
+import { Image, Button, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 
 const Profile = () => {

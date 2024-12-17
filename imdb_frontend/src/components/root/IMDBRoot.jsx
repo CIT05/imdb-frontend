@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import Star from '../../assets/star.png';
 import AllGenres from '../genres/allGenres/AllGenres';
-import PersonService from '../../services/PersonService';
+import PersonService from '../../services/Person/PersonService';
 import titleServiceInstance from '../../services/Title/TitleService.js';
 import { Card, Col, Container, Row, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router';

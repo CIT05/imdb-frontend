@@ -1,8 +1,6 @@
-// @ts-nocheck
 import Pagination from 'react-bootstrap/Pagination';
 
 const Paginator = ({numberOfPages, chosenPage, onPageChange}) => {
-
 
   return (
     <Pagination style={{marginTop: '1rem'}}>

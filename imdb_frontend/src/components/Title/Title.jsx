@@ -1,26 +1,21 @@
-// @ts-nocheck
 import React, { useEffect, useState } from 'react';
-
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import { Stack, Button } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import { useParams } from 'react-router';
 import Image from 'react-bootstrap/Image';
 import Badge from 'react-bootstrap/Badge';
-import { useUserContext } from '../../contexts/UserContext.js';
-
 import titleServiceInstance from '../../services/Title/TitleService.js';
-import './Title.css';
 import PersonPreview from '../Person/PersonPreview.jsx';
 import Episode from './Episode/Episode.jsx';
 import Loading from '../loading/Loading.jsx';
 import RateTitleModal from '../rating/RateTitleModal.jsx';
-import UserService from '../../services/UserService.js';
-
-
-var Star = require('../../assets/star.png');
+import UserService from '../../services/User/UserService.js';
+import Star from '../../assets/star.png';
+import { Stack, Button } from 'react-bootstrap';
+import { useParams } from 'react-router';
+import { useUserContext } from '../../contexts/UserContext.js';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import './Title.css';
 
 const Title = () => {
 	const { tconst } = useParams();

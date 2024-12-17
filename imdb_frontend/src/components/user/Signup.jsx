@@ -1,9 +1,9 @@
+import UserService from '../../services/User/UserService';
 import { Form, Button, Stack, Container } from 'react-bootstrap';
-import styles from './style.module.css';
 import { useState, useEffect } from 'react';
-import UserService from '../../services/UserService';
 import { useUserContext } from '../../contexts/UserContext';
 import { useNavigate } from 'react-router';
+import styles from './style.module.css';
 
 const Signup = () => {
 	const navigate = useNavigate();

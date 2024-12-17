@@ -4,8 +4,9 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import SearchBar from '../search-bar/SearchBar';
 import { useUserContext } from '../../contexts/UserContext';
-import 'bootstrap-icons/font/bootstrap-icons.css';
 import style from './Navigation.module.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 
 const Navigation = () => {
 	const [isExpanded, setIsExpanded] = useState(false);

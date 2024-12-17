@@ -1,21 +1,9 @@
-// @ts-nocheck
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
-import {
-	Container,
-	Row,
-	Card,
-	Button,
-	Form,
-	Accordion,
-	Offcanvas,
-} from 'react-bootstrap';
-
 import genreServiceInstance from '../../../services/Genres/GenresService';
-
 import Paginator from '../../Paginator/Paginator';
-
 import Loading from '../../loading/Loading';
+import { useParams } from 'react-router';
+import {Container, Row, Card, Button, Form, Accordion, Offcanvas} from 'react-bootstrap';
 import './SingularGenre.css';
 
 const SingularGenre = () => {

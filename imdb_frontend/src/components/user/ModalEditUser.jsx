@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import UserService from '../../services/User/UserService';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useUserContext } from '../../contexts/UserContext';
-import UserService from '../../services/UserService';
 
 const ModalEditUser = ({ setUserInfo, onHide, show }) => {
 	const { languages, loggedInUser } = useUserContext();

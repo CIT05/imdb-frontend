@@ -1,11 +1,9 @@
-// @ts-nocheck
 import React, { useState, useEffect } from 'react';
-
-import './AllGenres.css';
-import { Container, Row } from 'react-bootstrap';
 import Loading from '../../loading/Loading';
 import genreServiceInstance from '../../../services/Genres/GenresService';
 import Paginator from '../../Paginator/Paginator';
+import { Container, Row } from 'react-bootstrap';
+import './AllGenres.css';
 
 const AllGenres = () => {
 
