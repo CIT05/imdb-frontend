@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Loading from '../../loading/Loading';
 import genreServiceInstance from '../../../services/Genres/GenresService';
-import Paginator from '../../Paginator/Paginator';
+import Paginator from '../../paginator/Paginator';
 import { Container, Row } from 'react-bootstrap';
 import './AllGenres.css';
 
