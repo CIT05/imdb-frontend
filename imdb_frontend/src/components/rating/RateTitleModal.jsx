@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import ratingServiceInstance from '../../services/Rating/ratingService';
+import ratingServiceInstance from '../../services/Rating/RatingService';
 import { Modal, Button, Form } from 'react-bootstrap';
 import './RateTitleModal.css';
 
