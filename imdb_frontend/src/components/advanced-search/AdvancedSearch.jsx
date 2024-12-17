@@ -218,7 +218,7 @@ const AdvancedSearch = () => {
             </div>
      
         <div className={style.submitButtonContainer}>
-            <Button variant="outline-light" type="button"  onClick={handleSearchCelebs}>
+            <Button variant="outline-light" type="button" onClick={handleSearchCelebs}>
                         See results
                     </Button>
                 </div>

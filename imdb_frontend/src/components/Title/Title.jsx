@@ -76,7 +76,7 @@ const Title = () => {
 			);
 			setIsBookmarked(bookmarked);
 		}
-	}, [userInfo, tconst]);
+	}, [userInfo, tconst, loggedInUser]);
 
 	const handleBookmarkClick = async () => {
 		try {
