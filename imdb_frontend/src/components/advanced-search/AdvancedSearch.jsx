@@ -6,6 +6,7 @@ import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown';
 import searchServiceInstance from '../../services/Search/SearchService';
 import style from './AdvancedSearch.module.css';
+import { useUserContext } from '../../contexts/UserContext';
 
 const AdvancedSearch = () => {
     const [loading, setLoading] = useState(false);
@@ -13,6 +14,10 @@ const AdvancedSearch = () => {
     const [searchType, setSearchType] = useState('');
     const [results, setResults] = useState([]);
     const [visibleCount, setVisibleCount] = useState(10);
+
+    const {loggedInUser} = useUserContext();
+
+    const userId = loggedInUser?.userId;
 
     const handleSearchTitle = useCallback(() => {
         const params = {};
@@ -26,7 +31,7 @@ const AdvancedSearch = () => {
         if (moviePlot) params.moviePlot = moviePlot;
         if (titleCharacters) params.titleCharacters = titleCharacters;
         if (personName) params.personName = personName;
-    
+        if(userId) params.userId = userId;    
     
         searchServiceInstance.searchTitleWithParams(params).then(data => {
             setResults(data);
@@ -49,6 +54,7 @@ const AdvancedSearch = () => {
         if (moviePlot) params.moviePlot = moviePlot;
         if (titleCharacters) params.titleCharacters = titleCharacters;
         if (personName) params.personName = personName;
+        if(userId) params.userId = userId;
     
     
         searchServiceInstance.searchActorsWithParams(params).then(data => {
@@ -75,6 +81,8 @@ const AdvancedSearch = () => {
         setResults([]);
     }, [activeTab]);
     return (
+        <>
+        {loggedInUser ?
         <>
         <div className={style.advancedContainer}>
             <h1 className={[style.h1]}>Advanced Search</h1>
@@ -277,7 +285,8 @@ const AdvancedSearch = () => {
             )}
   
         </>
-
+        : <h1>Please log in to use this feature</h1>}
+        </>
     );
 };
 
