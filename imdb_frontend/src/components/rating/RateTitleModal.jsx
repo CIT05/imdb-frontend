@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
-
 import ratingServiceInstance from '../../services/Rating/ratingService';
+import { Modal, Button, Form } from 'react-bootstrap';
 import './RateTitleModal.css';
 
 const RateTitleModal = ({ show, handleClose, tconst, userId, token }) => {
